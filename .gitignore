@@ -1,0 +1,70 @@
+# --- Node ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# --- Environment variables ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Logs ---
+logs
+*.log
+log.*
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# --- Build output ---
+dist/
+build/
+.cache/
+.next/
+out/
+coverage/
+temp/
+tmp/
+
+# --- Frontend specific ---
+# React
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# Vite / CRA cache
+.vite/
+*.tsbuildinfo
+
+# --- Backend specific ---
+backend/node_modules/
+backend/.env
+.env
+backend/dist/
+backend/uploads/
+
+# --- IDE / OS Files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Misc ---
+# Optional npm cache directory
+.npm
+# Optional eslint cache
+.eslintcache
+# Optional stylelint cache
+.stylelintcache
+
+# --- Testing ---
+/coverage
+/.nyc_output

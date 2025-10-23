@@ -1,0 +1,157 @@
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Headings */
+h2,
+h3 {
+  color: #333;
+  margin-bottom: 16px;
+}
+
+/* Filter section */
+.filter-card {
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  gap: 16px;
+}
+
+.filter-row,
+.filter {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-row label,
+.filter label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.filter-row select,
+.filter-row input,
+.filter select,
+.filter input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  min-width: 150px;
+}
+
+/* Add section form */
+.add-section {
+  background: #f3f3f3;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.responsive-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input,
+.form-group select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.submit-btn {
+  grid-column: 1 / -1;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+}
+
+/* Table */
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.records-table th,
+.records-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.records-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.records-table tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.records-table tbody tr:nth-child(even) {
+  background-color: #e6f0ff;
+}
+
+.records-table button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.records-table button:hover {
+  opacity: 0.8;
+}
+
+.records-table button:first-child {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.records-table button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Edit section */
+pre {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .responsive-form {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-card {
+    flex-direction: column;
+  }
+
+  .records-table th,
+  .records-table td {
+    font-size: 14px;
+    padding: 6px;
+  }
+}
