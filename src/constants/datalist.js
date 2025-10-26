@@ -53,7 +53,6 @@ export const unitList = {
   ],
 
   KUNJATHUR: [
-    "10TH MILE",
     "BS NAGAR",
     "HARWAR",
     "HYGLODHI",
@@ -61,6 +60,7 @@ export const unitList = {
     "KUNJATHUR",
     "MOULANA ROAD",
     "SANNADKA",
+    "TENTH MILE",
     "THUMINAD",
     "UDYAWARAM",
   ],
