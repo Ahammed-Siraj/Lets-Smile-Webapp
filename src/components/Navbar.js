@@ -329,7 +329,7 @@ export default function Navbar() {
               </strong>
             </span>
           )}
-          {token ? (
+          {token && (
             <button
               onClick={logout}
               style={{
@@ -343,10 +343,6 @@ export default function Navbar() {
               }}>
               Logout
             </button>
-          ) : (
-            <Link to="/login" style={{ ...linkStyle("/login"), color: "#fff" }}>
-              Login
-            </Link>
           )}
         </div>
       </nav>
