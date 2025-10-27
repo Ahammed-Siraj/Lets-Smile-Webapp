@@ -275,12 +275,12 @@ export default function Navbar() {
 
   const linkStyle = (path) => ({
     textDecoration: "none",
-    background: location.pathname === path ? "#74ebd5" : "transparent",
-    color: location.pathname === path ? "#0b6b5a" : "#0b6b5a",
+    background: location.pathname === path ? "#0b6b5a" : "transparent",
+    color: location.pathname === path ? "#74ebd5" : "#74ebd5",
     fontWeight: location.pathname === path ? "bold" : "normal",
-    padding: "10px 20px",
-    borderRadius: "8px",
-    border: "2px solid #74ebd5",
+    padding: "10px 10px",
+    borderRadius: "5px",
+    border: "1.5px solid #0b6b5a",
     transition: "all 0.3s ease",
   });
 
@@ -362,7 +362,7 @@ export default function Navbar() {
             justifyContent: "center",
             flexWrap: "wrap",
             gap: "10px",
-            padding: "15px",
+            padding: "5px",
           }}>
           {!token && (
             <Link to="/" style={linkStyle("/")}>
@@ -389,3 +389,4 @@ export default function Navbar() {
     </>
   );
 }
+
