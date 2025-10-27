@@ -278,9 +278,9 @@ export default function Navbar() {
     background: location.pathname === path ? "#0b6b5a" : "transparent",
     color: location.pathname === path ? "#74ebd5" : "#74ebd5",
     fontWeight: location.pathname === path ? "bold" : "normal",
-    padding: "10px 10px",
+    padding: "6px 8px",
     borderRadius: "5px",
-    border: "1.5px solid #0b6b5a",
+    // border: "2px solid #0b6b5a",
     transition: "all 0.3s ease",
   });
 
@@ -335,7 +335,7 @@ export default function Navbar() {
               style={{
                 background: "#74ebd5",
                 border: "none",
-                padding: "8px 12px",
+                padding: "6px 8px",
                 borderRadius: "5px",
                 color: "#0b6b5a",
                 fontWeight: "bold",
