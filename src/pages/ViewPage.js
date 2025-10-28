@@ -134,12 +134,15 @@ export default function ViewPage() {
         color: "#333",
         maxWidth: "1000px",
       }}>
-      <h2  style={{
+      <h2
+        style={{
           fontSize: "1.5rem",
           fontWeight: "500",
           marginBottom: "20px",
           color: "#0b6b5a",
-        }}>📋 SMILE Friends List</h2>
+        }}>
+        📋 SMILE Friends List
+      </h2>
 
       {/* 🔍 Filter Section */}
       <div
@@ -474,32 +477,11 @@ export default function ViewPage() {
         .export-btn:hover {
           background: #0056b3;
         }
-          .records-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* Important for truncation */
-}
-
-.records-table th,
-.records-table td {
-  padding: 8px;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; /* Keeps text in a single line */
-  max-width: 150px; /* Adjust for different screen sizes if needed */
-}
-
-/* Responsive tweak: allow wrapping on smaller screens */
-@media (max-width: 768px) {
-  .records-table th,
-  .records-table td {
-    white-space: normal;
-    text-overflow: clip;
-    word-wrap: break-word;
-    max-width: none;
-  }
-}
+        .records-table {
+          width: 100%;
+          border-collapse: collapse;
+          table-layout: fixed; /* Important for truncation */
+        }
 
         @media (max-width: 768px) {
           .filter-row {
@@ -523,6 +505,10 @@ export default function ViewPage() {
           border: 1px solid #ddd;
           text-align: left;
           white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap; /* Keeps text in a single line */
+          max-width: 150px; /* Adjust for different screen sizes if needed */
         }
         .records-table th {
           color: #000; /* black text */
