@@ -137,13 +137,13 @@ export default function ViewPage() {
 
     // Create text summary
     const messageText = Object.entries(counts)
-      .map(([unit, count]) => `${unit}: ${count}`)
+      .map(([unit, count]) => `${unit}---: *${count}*`)
       .join("\n");
 
-    // Create WhatsApp share link
-    const shareText = `📊 SMILE Friends\n *${
+    const shareText = `*SMILE Friends List* \n *UNIT STATUS*\n\n${messageText}\n\n*© ${
       sector || "All Sectors"
-    }*\n\n${messageText}`;
+    } Sector*`;
+
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
     // HTML formatted for SweetAlert popup
