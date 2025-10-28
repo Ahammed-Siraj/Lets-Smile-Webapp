@@ -17,7 +17,7 @@ export default function Navbar() {
 
   const linkStyle = (path) => ({
     textDecoration: "none",
-    background: location.pathname === path ? "#ffffff" : "transparent",
+    background: location.pathname === path ? "#f7f7f8" : "transparent",
     color: location.pathname === path ? "#0b6b5a" : "#74ebd5",
     fontWeight: location.pathname === path ? "bold" : "normal",
     padding: "6px 30px",
