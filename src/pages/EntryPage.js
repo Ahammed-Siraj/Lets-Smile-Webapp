@@ -71,7 +71,17 @@ export default function EntryPage() {
         color: "#333",
         maxWidth: "1000px",
       }}>
-      <div
+      <h2
+        style={{
+          fontSize: "1.5rem",
+          fontWeight: "500",
+          marginBottom: "20px",
+          color: "#0b6b5a",
+        }}>
+        📝 Let’s Get Started
+      </h2>
+
+      {/* <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -95,7 +105,7 @@ export default function EntryPage() {
           }}>
           📝 Let’s Get Started
         </h2>
-      </div>
+      </div> */}
       <form
         onSubmit={handleSubmit}
         style={{

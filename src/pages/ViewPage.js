@@ -134,7 +134,12 @@ export default function ViewPage() {
         color: "#333",
         maxWidth: "1000px",
       }}>
-      <h2 style={{ marginBottom: "1rem" }}>📋 SMILE Friends List</h2>
+      <h2  style={{
+          fontSize: "1.5rem",
+          fontWeight: "500",
+          marginBottom: "20px",
+          color: "#0b6b5a",
+        }}>📋 SMILE Friends List</h2>
 
       {/* 🔍 Filter Section */}
       <div
@@ -367,18 +372,7 @@ export default function ViewPage() {
             onClick={() => setSelectedRecord(null)}>
             Close
           </Button>
-          {/* <Button
-            style={{
-              backgroundColor: "#0b6b5a", // Custom blue button
-              border: "none",
-              borderRadius: "8px",
-              padding: "8px 18px",
-              fontWeight: "500",
-              display: "none",
-            }}
-            onClick={() => setSelectedRecord(null)}>
-            Delete
-          </Button> */}
+
           <Button
             style={{
               backgroundColor: "#e63946",
