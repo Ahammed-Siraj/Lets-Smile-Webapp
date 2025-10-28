@@ -121,6 +121,58 @@ export default function ViewPage() {
     doc.save(`registrations_${sector}.pdf`);
   };
 
+  // 📊 Show unit count for the selected sector only + WhatsApp share
+  const showUnitCounts = () => {
+    // Filter records for selected/fixed sector
+    const sectorRecords = sector
+      ? records.filter((r) => r.sector === sector)
+      : records;
+
+    // Group by unit
+    const counts = sectorRecords.reduce((acc, curr) => {
+      if (!acc[curr.unit]) acc[curr.unit] = 0;
+      acc[curr.unit]++;
+      return acc;
+    }, {});
+
+    // Create text summary
+    const messageText = Object.entries(counts)
+      .map(([unit, count]) => `${unit}: ${count}`)
+      .join("\n");
+
+    // Create WhatsApp share link
+    const shareText = `📊 SMILE Friends\n *${
+      sector || "All Sectors"
+    }*\n\n${messageText}`;
+    const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+
+    // HTML formatted for SweetAlert popup
+    const messageHTML = Object.entries(counts)
+      .map(([unit, count]) => `${unit}: ${count}`)
+      .join("<br>");
+
+    Swal.fire({
+      title: `📊 Unit Status ${sector ? ` (${sector} Sector)` : ""}`,
+      html:
+        (messageHTML || "No records found for this sector.") +
+        `<br><br><a href="${whatsappLink}" target="_blank"
+          style="
+            display:inline-block;
+            padding:8px 16px;
+            background-color:#25D366;
+            color:white;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+          ">
+          📲 Share on WhatsApp
+        </a>`,
+      icon: "info",
+      confirmButtonText: "Close",
+      confirmButtonColor: "#0b6b5a",
+    });
+  };
+
   return (
     <div
       className="container"
@@ -222,9 +274,29 @@ export default function ViewPage() {
             </div>
           </div>
           {/* Export Button */}
-          <div className="filter-item" style={{ alignSelf: "end" }}>
+          {/* <div className="filter-item" style={{ alignSelf: "end" }}>
             <button className="export-btn" onClick={exportPDF}>
               📄 Export PDF
+            </button>
+          </div> */}
+          <div
+            className="filter-item"
+            style={{
+              alignSelf: "end",
+              display: "flex",
+              flexDirection: "row",
+              gap: "10px",
+              flexWrap: "wrap",
+            }}>
+            <button className="export-btn" onClick={exportPDF}>
+              📄 Export PDF
+            </button>
+
+            <button
+              className="export-btn"
+              style={{ background: "#0b6b5a" }}
+              onClick={showUnitCounts}>
+              📊 Unit Counts
             </button>
           </div>
         </div>
@@ -244,6 +316,15 @@ export default function ViewPage() {
           color: "#333",
           maxWidth: "1000px",
         }}>
+        <p
+          style={{
+            textAlign: "right",
+            fontWeight: "600",
+            color: "#0b6b5a",
+            marginBottom: "10px",
+          }}>
+          Total Records: {filtered.length}
+        </p>
         <table
           className="records-table"
           style={{
