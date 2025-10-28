@@ -262,7 +262,6 @@ export default function ViewPage() {
                 type="text"
                 placeholder="Search by name"
                 value={filterName}
-                // onChange={(e) => setFilterName(e.target.value)}
                 onChange={(e) => {
                   const lettersOnly = e.target.value.replace(
                     /[^a-zA-Z\s]/g,
@@ -273,12 +272,8 @@ export default function ViewPage() {
               />
             </div>
           </div>
+
           {/* Export Button */}
-          {/* <div className="filter-item" style={{ alignSelf: "end" }}>
-            <button className="export-btn" onClick={exportPDF}>
-              📄 Export PDF
-            </button>
-          </div> */}
           <div
             className="filter-item"
             style={{
@@ -292,12 +287,14 @@ export default function ViewPage() {
               📄 Export PDF
             </button>
 
-            <button
-              className="export-btn"
-              style={{ background: "#0b6b5a" }}
-              onClick={showUnitCounts}>
-              📊 Unit Counts
-            </button>
+            {localStorage.getItem("userType") !== "unit" && (
+              <button
+                className="export-btn"
+                style={{ background: "#0b6b5a" }}
+                onClick={showUnitCounts}>
+                📊 Unit Counts
+              </button>
+            )}
           </div>
         </div>
       </div>
