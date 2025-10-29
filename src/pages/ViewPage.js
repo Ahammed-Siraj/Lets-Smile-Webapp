@@ -225,7 +225,6 @@ export default function ViewPage() {
     // Detect if on mobile
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-
     if (isMobile) {
       Swal.fire({
         title: "📄 Download PDF?",
@@ -251,8 +250,9 @@ export default function ViewPage() {
             timer: 2000,
             showConfirmButton: false,
           });
+        } else {
+          window.open(pdfUrl, "_blank");
         }
-        else{    window.open(pdfUrl, "_blank");}
       });
     } else {
       // Desktop – open preview tab
@@ -358,7 +358,7 @@ export default function ViewPage() {
 ────────────────
 ${messageText}
 ────────────────
-*SSF* ${sector || "All Sectors"} Sector
+*SSF ${sector || "All Sectors"}* Sector
 © Smile Club`;
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
