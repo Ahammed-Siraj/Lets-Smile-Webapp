@@ -196,7 +196,7 @@ ${messageText}
         flexDirection: "column",
         justifyContent: "center",
         background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-        borderRadius: "20px",
+        borderRadius: "10px",
         boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
         color: "#333",
         maxWidth: "1000px",
@@ -205,7 +205,7 @@ ${messageText}
         style={{
           fontSize: "1.5rem",
           fontWeight: "500",
-          marginBottom: "20px",
+          marginBottom: "10px",
           color: "#0b6b5a",
         }}>
         📋 SMILE Friends List
@@ -219,7 +219,7 @@ ${messageText}
           flexDirection: "column",
           justifyContent: "center",
           background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-          borderRadius: "20px",
+          borderRadius: "10px",
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
@@ -234,7 +234,7 @@ ${messageText}
               flexWrap: "wrap",
               gap: "1rem",
               background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-              marginBottom: "2rem",
+              marginBottom: "10px",
             }}>
             <div className="form-group">
               <label>Sector</label>
