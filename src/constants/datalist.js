@@ -2,8 +2,8 @@ export const unitList = {
   BAKRABAIL: [
     "BADIMALE",
     "BAKRABAIL",
-    "BOLMARNORTH",
-    "BOLMARSOUTH",
+    "BOLMAR NORTH",
+    "BOLMAR SOUTH",
     "CM NAGAR",
     "KAJE",
     "KOOTTURASTHE",

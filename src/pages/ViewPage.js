@@ -87,14 +87,24 @@ export default function ViewPage() {
   const totalPages = Math.ceil(filtered.length / recordsPerPage);
 
   // 📄 Export filtered data to PDF
+
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(14);
     const date = new Date().toLocaleString();
+
     const title = `Smart Club Registrations - ${sector}${
       filterUnit ? ` / ${filterUnit}` : ""
     }`;
     doc.text(`${title}: ${date}`, 14, 15);
+
+    // ✅ Sort first by unit, then by name
+    const sortedData = [...filtered].sort((a, b) => {
+      const unitCompare = a.unit.localeCompare(b.unit);
+      if (unitCompare !== 0) return unitCompare;
+      return a.name.localeCompare(b.name);
+    });
+
     autoTable(doc, {
       head: [
         [
@@ -108,7 +118,7 @@ export default function ViewPage() {
           "Number",
         ],
       ],
-      body: filtered.map((i) => [
+      body: sortedData.map((i) => [
         i.sector,
         i.unit,
         i.name,
@@ -121,7 +131,8 @@ export default function ViewPage() {
       startY: 25,
       theme: "grid",
     });
-    doc.save(`registrations_${sector}.pdf`);
+
+    doc.save(`registrations_${sector}_${date}.pdf`);
   };
 
   // 📊 Show unit count for the selected sector only + WhatsApp share
