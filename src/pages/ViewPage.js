@@ -16,6 +16,8 @@ export default function ViewPage() {
   const unit = localStorage.getItem("unit") || ""; // ✅ fixed unit from login
   const userType = localStorage.getItem("userType"); // "sector" or "unit"
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10; // number of rows per page
 
   useEffect(() => {
     fetchRecords();
@@ -82,6 +84,7 @@ export default function ViewPage() {
       : true;
     return matchSector && matchUnit && matchName;
   });
+  const totalPages = Math.ceil(filtered.length / recordsPerPage);
 
   // 📄 Export filtered data to PDF
   const exportPDF = () => {
@@ -136,13 +139,25 @@ export default function ViewPage() {
     }, {});
 
     // Create text summary
-    const messageText = Object.entries(counts)
-      .map(([unit, count]) => `${unit}---: *${count}*`)
+
+    const selectedUnits = unitList[sector] || []; // fallback to empty array if not found
+
+    const messageText = selectedUnits
+      .map((unit) => ({
+        unit,
+        count: counts[unit] || 0,
+      }))
+      .sort((a, b) => b.count - a.count)
+      .map(({ unit, count }) => `*#* ${unit} ---: *${count}*`)
       .join("\n");
 
-    const shareText = `*SMILE Friends List* \n *UNIT STATUS*\n\n${messageText}\n\n*© ${
-      sector || "All Sectors"
-    } Sector*`;
+    const shareText = `\`\`\`⭐ SMILE Friends List ⭐\`\`\`
+📋 *UNIT STATUS*
+────────────────
+${messageText}
+────────────────
+🏘️ *SSF* ${sector || "All Sectors"} Sector
+💬 © Smile Club`;
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
@@ -343,7 +358,7 @@ export default function ViewPage() {
               <th className="desktop-only">Number</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {filtered.map((r) => (
               <tr
                 key={r._id}
@@ -367,8 +382,87 @@ export default function ViewPage() {
                 </td>
               </tr>
             )}
+          </tbody> */}
+          <tbody>
+            {filtered
+              .slice(
+                (currentPage - 1) * recordsPerPage,
+                currentPage * recordsPerPage
+              )
+              .map((r) => (
+                <tr
+                  key={r._id}
+                  className="table-row"
+                  onClick={() => setSelectedRecord(r)}
+                  style={{ cursor: "pointer" }}>
+                  <td className="desktop-only">{r.sector}</td>
+                  <td>{r.unit}</td>
+                  <td>{r.name}</td>
+                  <td>{r.age}</td>
+                  <td>{r.className}</td>
+                  <td className="desktop-only">{r.school}</td>
+                  <td className="desktop-only">{r.fatherName}</td>
+                  <td className="desktop-only">{r.number}</td>
+                </tr>
+              ))}
+            {filtered.length === 0 && (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  No records found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "15px",
+            gap: "8px",
+          }}>
+          <button
+            className="export-btn"
+            style={{
+              background: "#0b6b5a",
+              padding: "6px 12px",
+              borderRadius: "8px",
+            }}
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}>
+            ◀ Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              style={{
+                background: currentPage === i + 1 ? "#007bff" : "#74ebd5",
+                color: currentPage === i + 1 ? "white" : "#0b6b5a",
+                border: "none",
+                borderRadius: "8px",
+                padding: "6px 10px",
+                fontWeight: "600",
+                cursor: "pointer",
+              }}>
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            className="export-btn"
+            style={{
+              background: "#0b6b5a",
+              padding: "6px 12px",
+              borderRadius: "8px",
+            }}
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}>
+            Next ▶
+          </button>
+        </div>
       </div>
 
       {/* Modal for Record Details */}
