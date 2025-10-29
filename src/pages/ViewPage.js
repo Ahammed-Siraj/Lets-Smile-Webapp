@@ -87,7 +87,6 @@ export default function ViewPage() {
   const totalPages = Math.ceil(filtered.length / recordsPerPage);
 
   // 📄 Export filtered data to PDF
-
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(14);
@@ -108,6 +107,7 @@ export default function ViewPage() {
     autoTable(doc, {
       head: [
         [
+          "Sl. No.",
           "Sector",
           "Unit",
           "Name",
@@ -118,7 +118,8 @@ export default function ViewPage() {
           "Number",
         ],
       ],
-      body: sortedData.map((i) => [
+      body: sortedData.map((i, index) => [
+        index + 1, // ✅ numbering column
         i.sector,
         i.unit,
         i.name,
@@ -132,7 +133,7 @@ export default function ViewPage() {
       theme: "grid",
     });
 
-    doc.save(`registrations_${sector}_${date}.pdf`);
+    doc.save(`registrations_${sector}.pdf`);
   };
 
   // 📊 Show unit count for the selected sector only + WhatsApp share
