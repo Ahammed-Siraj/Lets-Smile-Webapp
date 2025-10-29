@@ -148,32 +148,65 @@ export default function ViewPage() {
     doc.text(`Generated on: ${date}`, 14, gradientHeight + 8);
 
     // === 📋 Table with clickable phone numbers ===
-    const tableBody = sortedData.map((i, index) => [
-      index + 1,
-      i.sector,
-      i.unit,
-      i.name,
-      i.className,
-      i.school,
-      i.age,
-      i.fatherName,
-      { content: i.number, link: `tel:${i.number}` },
-    ]);
+    // const tableBody = sortedData.map((i, index) => [
+    //   index + 1,
+    //   i.sector,
+    //   i.unit,
+    //   i.name,
+    //   i.className,
+    //   i.school,
+    //   i.age,
+    //   i.fatherName,
+    //   { content: i.number, link: `tel:${i.number}` },
+    // ]);
+    // Determine if the user is logged in as a specific sector
+    const isSectorUser = localStorage.getItem("sector"); // or check localStorage if stored there
+
+    // Define table head dynamically
+    const tableHead = isSectorUser
+      ? [["No", "Unit", "Name", "Class", "School", "Age", "Father", "Number"]]
+      : [
+          [
+            "No",
+            "Sector",
+            "Unit",
+            "Name",
+            "Class",
+            "School",
+            "Age",
+            "Father",
+            "Number",
+          ],
+        ];
+
+    // Define table body dynamically
+    const tableBody = sortedData.map((i, index) =>
+      isSectorUser
+        ? [
+            index + 1,
+            i.unit,
+            i.name,
+            i.className,
+            i.school,
+            i.age,
+            i.fatherName,
+            { content: i.number, link: `tel:${i.number}` },
+          ]
+        : [
+            index + 1,
+            i.sector,
+            i.unit,
+            i.name,
+            i.className,
+            i.school,
+            i.age,
+            i.fatherName,
+            { content: i.number, link: `tel:${i.number}` },
+          ]
+    );
 
     autoTable(doc, {
-      head: [
-        [
-          "No.",
-          "Sector",
-          "Unit",
-          "Name",
-          "Class",
-          "School",
-          "Age",
-          "Father",
-          "Number",
-        ],
-      ],
+      head: tableHead,
       body: tableBody,
       startY: gradientHeight + 12,
       theme: "grid",
