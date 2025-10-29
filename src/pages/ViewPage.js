@@ -146,7 +146,7 @@ export default function ViewPage() {
     doc.setFontSize(10);
     doc.setTextColor(70);
     doc.text(`Generated on: ${date}`, 14, gradientHeight + 8);
-    
+
     // Determine if the user is logged in as a specific sector
     const isSectorUser = localStorage.getItem("sector"); // or check localStorage if stored there
 
@@ -218,35 +218,46 @@ export default function ViewPage() {
       },
     });
 
-    // === 💾 Save PDF ===
-    //doc.save(`Let's Smile_${sector}.pdf`);
-    // const pdfBlob = doc.output("blob");
-    // const pdfUrl = URL.createObjectURL(pdfBlob);
-    // window.open(pdfUrl, "_blank");
     // === 💾 Preview + Mobile-friendly Download ===
-const pdfBlob = doc.output("blob");
-const pdfUrl = URL.createObjectURL(pdfBlob);
+    const pdfBlob = doc.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
 
-// Detect if on mobile
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    // Detect if on mobile
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-if (isMobile) {
-  // Create a hidden download link for mobile
-  const link = document.createElement("a");
-  link.href = pdfUrl;
-  link.download = `Let's_Smile_${sector || "All"}.pdf`;
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 
-  // Also open preview in new tab (optional)
-  window.open(pdfUrl, "_blank");
-} else {
-  // Desktop – open preview tab
-  window.open(pdfUrl, "_blank");
-}
-
+    if (isMobile) {
+      Swal.fire({
+        title: "📄 Download PDF?",
+        text: "Do you want to download this report?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Download",
+        cancelButtonText: "No, Just Preview",
+        confirmButtonColor: "#0b6b5a",
+        cancelButtonColor: "#999",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const link = document.createElement("a");
+          link.href = pdfUrl;
+          link.download = `Let's_Smile_${sector || "All"}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          Swal.fire({
+            title: "✅ Download Started",
+            text: "Your PDF report is being downloaded.",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+        else{    window.open(pdfUrl, "_blank");}
+      });
+    } else {
+      // Desktop – open preview tab
+      window.open(pdfUrl, "_blank");
+    }
   };
 
   // 📊 Show unit count for the selected sector only + WhatsApp share
