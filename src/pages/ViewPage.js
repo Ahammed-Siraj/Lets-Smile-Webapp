@@ -7,6 +7,7 @@ import { unitList } from "../constants/datalist";
 import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Swal from "sweetalert2";
+import smileclublogo from "../images/smileclublogo.png";
 
 export default function ViewPage() {
   const [records, setRecords] = useState([]);
@@ -87,27 +88,129 @@ export default function ViewPage() {
   const totalPages = Math.ceil(filtered.length / recordsPerPage);
 
   // 📄 Export filtered data to PDF
-  const exportPDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(14);
-    const date = new Date().toLocaleString();
+  // const exportPDF = () => {
+  //   const doc = new jsPDF();
+  //   doc.setFontSize(14);
+  //   const date = new Date().toLocaleString();
 
-    const title = `Smart Club Registrations - ${sector}${
+  //   const title = `Smart Club Registrations - ${sector}${
+  //     filterUnit ? ` / ${filterUnit}` : ""
+  //   }`;
+  //   doc.text(`${title}: ${date}`, 14, 15);
+
+  //   // ✅ Sort first by unit, then by name
+  //   const sortedData = [...filtered].sort((a, b) => {
+  //     const unitCompare = a.unit.localeCompare(b.unit);
+  //     if (unitCompare !== 0) return unitCompare;
+  //     return a.name.localeCompare(b.name);
+  //   });
+
+  //   autoTable(doc, {
+  //     head: [
+  //       [
+  //         "No.",
+  //         "Sector",
+  //         "Unit",
+  //         "Name",
+  //         "Class",
+  //         "School",
+  //         "Age",
+  //         "Father",
+  //         "Number",
+  //       ],
+  //     ],
+  //     body: sortedData.map((i, index) => [
+  //       index + 1, // ✅ numbering column
+  //       i.sector,
+  //       i.unit,
+  //       i.name,
+  //       i.className,
+  //       i.school,
+  //       i.age,
+  //       i.fatherName,
+  //       i.number,
+  //     ]),
+  //     startY: 25,
+  //     theme: "grid",
+  //   });
+
+  //   doc.save(`registrations_${sector}.pdf`);
+  // };
+  const exportPDF = async () => {
+    const logoWidth = 15;
+    const logoHeight = 11;
+
+    // Sort data by Unit → Name
+    const sortedData = [...filtered].sort((a, b) => {
+      if (a.unit === b.unit) return a.name.localeCompare(b.name);
+      return a.unit.localeCompare(b.unit);
+    });
+
+    // Create A4 PDF
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // === 🌈 Draw gradient header ===
+    const gradientHeight = 16;
+    const gradientSteps = 100; // smoother gradient
+    for (let i = 0; i <= gradientSteps; i++) {
+      const ratio = i / gradientSteps;
+      const r = 116 + ratio * (172 - 116); // interpolate R (74ebd5 → ACB6E5)
+      const g = 235 + ratio * (182 - 235); // G
+      const b = 213 + ratio * (229 - 213); // B
+      doc.setFillColor(r, g, b);
+      doc.rect(
+        (pageWidth / gradientSteps) * i,
+        0,
+        pageWidth / gradientSteps,
+        gradientHeight,
+        "F"
+      );
+    }
+
+    // === 🖼️ Logo ===
+    try {
+      doc.addImage(smileclublogo, "PNG", 10, 2.5, logoWidth, logoHeight);
+    } catch (err) {
+      console.warn("Logo not found or failed to load:", err);
+    }
+
+    // === 🧾 Title + Date ===
+    const title = `Let's Smile Registrations - ${sector}${
       filterUnit ? ` / ${filterUnit}` : ""
     }`;
-    doc.text(`${title}: ${date}`, 14, 15);
+    const date = new Date().toLocaleString();
 
-    // ✅ Sort first by unit, then by name
-    const sortedData = [...filtered].sort((a, b) => {
-      const unitCompare = a.unit.localeCompare(b.unit);
-      if (unitCompare !== 0) return unitCompare;
-      return a.name.localeCompare(b.name);
-    });
+    doc.setFontSize(14);
+    doc.setTextColor(11, 107, 90);
+    doc.text(title, logoWidth + 22, (logoHeight + 10) / 2);
+
+    doc.setFontSize(10);
+    doc.setTextColor(70);
+    doc.text(`Generated on: ${date}`, 14, gradientHeight + 8);
+
+    // === 📋 Table with clickable phone numbers ===
+    const tableBody = sortedData.map((i, index) => [
+      index + 1,
+      i.sector,
+      i.unit,
+      i.name,
+      i.className,
+      i.school,
+      i.age,
+      i.fatherName,
+      { content: i.number, link: `tel:${i.number}` },
+    ]);
 
     autoTable(doc, {
       head: [
         [
-          "Sl. No.",
+          "No.",
           "Sector",
           "Unit",
           "Name",
@@ -118,22 +221,34 @@ export default function ViewPage() {
           "Number",
         ],
       ],
-      body: sortedData.map((i, index) => [
-        index + 1, // ✅ numbering column
-        i.sector,
-        i.unit,
-        i.name,
-        i.className,
-        i.school,
-        i.age,
-        i.fatherName,
-        i.number,
-      ]),
-      startY: 25,
+      body: tableBody,
+      startY: gradientHeight + 12,
       theme: "grid",
+      styles: { fontSize: 9, cellPadding: 2 },
+      headStyles: {
+        fillColor: [11, 107, 90],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      alternateRowStyles: { fillColor: [248, 255, 255] },
+      didDrawPage: (data) => {
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const pageCount = doc.internal.getNumberOfPages();
+        doc.setFontSize(9);
+        doc.setTextColor(120);
+        doc.text(
+          `Page ${pageCount}`,
+          data.settings.margin.left,
+          pageHeight - 10
+        );
+      },
     });
 
-    doc.save(`registrations_${sector}.pdf`);
+    // === 💾 Save PDF ===
+    //doc.save(`Let's Smile_${sector}.pdf`);
+    const pdfBlob = doc.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, "_blank");
   };
 
   // 📊 Show unit count for the selected sector only + WhatsApp share
