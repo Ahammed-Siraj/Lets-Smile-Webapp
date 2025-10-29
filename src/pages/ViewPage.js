@@ -359,7 +359,7 @@ export default function ViewPage() {
 ${messageText}
 ────────────────
 *SSF ${sector || "All Sectors"}* Sector
-© Smile Club`;
+© Let's Smile Club`;
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
