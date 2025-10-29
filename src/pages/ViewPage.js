@@ -88,54 +88,7 @@ export default function ViewPage() {
   const totalPages = Math.ceil(filtered.length / recordsPerPage);
 
   // 📄 Export filtered data to PDF
-  // const exportPDF = () => {
-  //   const doc = new jsPDF();
-  //   doc.setFontSize(14);
-  //   const date = new Date().toLocaleString();
 
-  //   const title = `Smart Club Registrations - ${sector}${
-  //     filterUnit ? ` / ${filterUnit}` : ""
-  //   }`;
-  //   doc.text(`${title}: ${date}`, 14, 15);
-
-  //   // ✅ Sort first by unit, then by name
-  //   const sortedData = [...filtered].sort((a, b) => {
-  //     const unitCompare = a.unit.localeCompare(b.unit);
-  //     if (unitCompare !== 0) return unitCompare;
-  //     return a.name.localeCompare(b.name);
-  //   });
-
-  //   autoTable(doc, {
-  //     head: [
-  //       [
-  //         "No.",
-  //         "Sector",
-  //         "Unit",
-  //         "Name",
-  //         "Class",
-  //         "School",
-  //         "Age",
-  //         "Father",
-  //         "Number",
-  //       ],
-  //     ],
-  //     body: sortedData.map((i, index) => [
-  //       index + 1, // ✅ numbering column
-  //       i.sector,
-  //       i.unit,
-  //       i.name,
-  //       i.className,
-  //       i.school,
-  //       i.age,
-  //       i.fatherName,
-  //       i.number,
-  //     ]),
-  //     startY: 25,
-  //     theme: "grid",
-  //   });
-
-  //   doc.save(`registrations_${sector}.pdf`);
-  // };
   const exportPDF = async () => {
     const logoWidth = 15;
     const logoHeight = 11;
@@ -252,6 +205,69 @@ export default function ViewPage() {
   };
 
   // 📊 Show unit count for the selected sector only + WhatsApp share
+  //   const showUnitCounts = () => {
+  //     // Filter records for selected/fixed sector
+  //     const sectorRecords = sector
+  //       ? records.filter((r) => r.sector === sector)
+  //       : records;
+
+  //     // Group by unit
+  //     const counts = sectorRecords.reduce((acc, curr) => {
+  //       if (!acc[curr.unit]) acc[curr.unit] = 0;
+  //       acc[curr.unit]++;
+  //       return acc;
+  //     }, {});
+
+  //     // Create text summary
+
+  //     const selectedUnits = unitList[sector] || []; // fallback to empty array if not found
+
+  //     const messageText = selectedUnits
+  //       .map((unit) => ({
+  //         unit,
+  //         count: counts[unit] || 0,
+  //       }))
+  //       .sort((a, b) => b.count - a.count)
+  //       .map(({ unit, count }) => `*#* ${unit} ---: *${count}*`)
+  //       .join("\n");
+
+  //     const shareText = `\`\`\`⭐ SMILE Friends List ⭐\`\`\`
+  // 📋 *UNIT STATUS*
+  // ────────────────
+  // ${messageText}
+  // ────────────────
+  // 🏘️ *SSF* ${sector || "All Sectors"} Sector
+  // 💬 © Smile Club`;
+
+  //     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+
+  //     // HTML formatted for SweetAlert popup
+  //     const messageHTML = Object.entries(counts)
+  //       .map(([unit, count]) => `${unit}: ${count}`)
+  //       .join("<br>");
+
+  //     Swal.fire({
+  //       title: `📊 Unit Status ${sector ? ` (${sector} Sector)` : ""}`,
+  //       html:
+  //         (messageHTML || "No records found for this sector.") +
+  //         `<br><br><a href="${whatsappLink}" target="_blank"
+  //           style="
+  //             display:inline-block;
+  //             padding:8px 16px;
+  //             background-color:#25D366;
+  //             color:white;
+  //             border-radius:8px;
+  //             text-decoration:none;
+  //             font-weight:600;
+  //           ">
+  //           📲 Share on WhatsApp
+  //         </a>`,
+  //       icon: "info",
+  //       confirmButtonText: "Close",
+  //       confirmButtonColor: "#0b6b5a",
+  //     });
+  //   };
+
   const showUnitCounts = () => {
     // Filter records for selected/fixed sector
     const sectorRecords = sector
@@ -265,16 +281,19 @@ export default function ViewPage() {
       return acc;
     }, {});
 
-    // Create text summary
+    // Get all units for this sector
+    const selectedUnits = unitList[sector] || [];
 
-    const selectedUnits = unitList[sector] || []; // fallback to empty array if not found
-
-    const messageText = selectedUnits
+    // Build and sort list
+    const sortedUnits = selectedUnits
       .map((unit) => ({
         unit,
         count: counts[unit] || 0,
       }))
-      .sort((a, b) => b.count - a.count)
+      .sort((a, b) => b.count - a.count);
+
+    // WhatsApp message
+    const messageText = sortedUnits
       .map(({ unit, count }) => `*#* ${unit} ---: *${count}*`)
       .join("\n");
 
@@ -288,30 +307,57 @@ ${messageText}
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
-    // HTML formatted for SweetAlert popup
-    const messageHTML = Object.entries(counts)
-      .map(([unit, count]) => `${unit}: ${count}`)
-      .join("<br>");
+    // Stylish HTML for SweetAlert
+    const messageHTML = `
+    <div style="
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      text-align: center;
+      margin-top: 10px;
+    ">
+      ${sortedUnits
+        .map(
+          ({ unit, count }, idx) => `
+          <div style="
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: #0b6b5a;
+            font-weight: 600;
+          ">
+            <div style="font-size: 1.1em;">${unit}</div>
+            <div style="font-size: 1.5em; font-weight: bold;">${count}</div>
+          </div>
+        `
+        )
+        .join("")}
+    </div>
+    <br>
+    <a href="${whatsappLink}" target="_blank"
+      style="
+        display:inline-block;
+        padding:10px 20px;
+        background-color:#25D366;
+        color:white;
+        border-radius:8px;
+        text-decoration:none;
+        font-weight:600;
+      ">
+      📲 Share on WhatsApp
+    </a>
+  `;
 
+    // Show SweetAlert
     Swal.fire({
       title: `📊 Unit Status ${sector ? ` (${sector} Sector)` : ""}`,
-      html:
-        (messageHTML || "No records found for this sector.") +
-        `<br><br><a href="${whatsappLink}" target="_blank"
-          style="
-            display:inline-block;
-            padding:8px 16px;
-            background-color:#25D366;
-            color:white;
-            border-radius:8px;
-            text-decoration:none;
-            font-weight:600;
-          ">
-          📲 Share on WhatsApp
-        </a>`,
+      html: messageHTML,
       icon: "info",
+      width: "600px",
       confirmButtonText: "Close",
       confirmButtonColor: "#0b6b5a",
+      background: "#f8fdfd",
     });
   };
 
