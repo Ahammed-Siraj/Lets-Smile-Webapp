@@ -146,19 +146,7 @@ export default function ViewPage() {
     doc.setFontSize(10);
     doc.setTextColor(70);
     doc.text(`Generated on: ${date}`, 14, gradientHeight + 8);
-
-    // === 📋 Table with clickable phone numbers ===
-    // const tableBody = sortedData.map((i, index) => [
-    //   index + 1,
-    //   i.sector,
-    //   i.unit,
-    //   i.name,
-    //   i.className,
-    //   i.school,
-    //   i.age,
-    //   i.fatherName,
-    //   { content: i.number, link: `tel:${i.number}` },
-    // ]);
+    
     // Determine if the user is logged in as a specific sector
     const isSectorUser = localStorage.getItem("sector"); // or check localStorage if stored there
 
@@ -232,9 +220,33 @@ export default function ViewPage() {
 
     // === 💾 Save PDF ===
     //doc.save(`Let's Smile_${sector}.pdf`);
-    const pdfBlob = doc.output("blob");
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    window.open(pdfUrl, "_blank");
+    // const pdfBlob = doc.output("blob");
+    // const pdfUrl = URL.createObjectURL(pdfBlob);
+    // window.open(pdfUrl, "_blank");
+    // === 💾 Preview + Mobile-friendly Download ===
+const pdfBlob = doc.output("blob");
+const pdfUrl = URL.createObjectURL(pdfBlob);
+
+// Detect if on mobile
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+if (isMobile) {
+  // Create a hidden download link for mobile
+  const link = document.createElement("a");
+  link.href = pdfUrl;
+  link.download = `Let's_Smile_${sector || "All"}.pdf`;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  // Also open preview in new tab (optional)
+  window.open(pdfUrl, "_blank");
+} else {
+  // Desktop – open preview tab
+  window.open(pdfUrl, "_blank");
+}
+
   };
 
   // 📊 Show unit count for the selected sector only + WhatsApp share
