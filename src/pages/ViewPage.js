@@ -294,16 +294,16 @@ export default function ViewPage() {
 
     // WhatsApp message
     const messageText = sortedUnits
-      .map(({ unit, count }) => `*#* ${unit} ---: *${count}*`)
+      .map(({ unit, count }) => `*⏺* ${unit} ---: *${count}*`)
       .join("\n");
 
-    const shareText = `\`\`\`⭐ SMILE Friends List ⭐\`\`\`
-📋 *UNIT STATUS*
+    const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
+📊 *UNIT STATUS*
 ────────────────
 ${messageText}
 ────────────────
-🏘️ *SSF* ${sector || "All Sectors"} Sector
-💬 © Smile Club`;
+*SSF* ${sector || "All Sectors"} Sector
+© Smile Club`;
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
@@ -312,7 +312,7 @@ ${messageText}
     <div style="
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
+      gap: 5px;
       text-align: center;
       margin-top: 10px;
     ">
@@ -321,14 +321,14 @@ ${messageText}
           ({ unit, count }, idx) => `
           <div style="
             background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
-            padding: 10px;
+            padding: 5px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             color: #0b6b5a;
-            font-weight: 600;
+            font-weight: semibold;
           ">
             <div style="font-size: 1.1em;">${unit}</div>
-            <div style="font-size: 1.5em; font-weight: bold;">${count}</div>
+            <div style="font-size: 1.3em; font-weight: bold;">${count}</div>
           </div>
         `
         )
