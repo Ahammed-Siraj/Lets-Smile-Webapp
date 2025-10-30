@@ -371,10 +371,9 @@ https://smile-manjeshwar.vercel.app
 ────────────────
 ${messageText}
 
-*Total: ${totalMembers}/${participatedUnits}* /${totalUnits}
+*Total: ${totalMembers}/${participatedUnits}/${totalUnits}*
 ────────────────
-🗓 _Generated On:_
-     _${date}_
+_Generated On: ${date}_
 ────────────────
 *SSF ${sector || "All Sectors"}* Sector
 © Let's Smile Club`;
