@@ -367,6 +367,7 @@ export default function ViewPage() {
     const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
 🔗Registration: 
 https://smile-manjeshwar.vercel.app
+
 📊 *UNIT STATUS*
 ────────────────
 ${messageText}
