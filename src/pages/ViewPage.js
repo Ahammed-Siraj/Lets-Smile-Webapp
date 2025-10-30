@@ -365,11 +365,13 @@ export default function ViewPage() {
       .map(({ unit, count }) => `*⏺* ${unit} ---: *${count}*`)
       .join("\n");
     const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
-*UNIT STATUS*
+🔗Registration: 
+https://smile-manjeshwar.vercel.app
+📊 *UNIT STATUS*
 ────────────────
 ${messageText}
 
-📊 *Total: ${totalMembers}/${participatedUnits}* /${totalUnits}
+*Total: ${totalMembers}/${participatedUnits}* /${totalUnits}
 ────────────────
 🗓 _Generated On:_
      _${date}_
