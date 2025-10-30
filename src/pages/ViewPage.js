@@ -133,11 +133,26 @@ export default function ViewPage() {
       console.warn("Logo not found or failed to load:", err);
     }
 
-    // === 🧾 Title + Date ===
-    const title = `Let's Smile Registrations - ${sector}${
-      filterUnit ? ` / ${filterUnit}` : ""
-    }`;
-    const date = new Date().toLocaleString();
+    // === 🧾 Title + Date
+    let title;
+    if (localStorage.getItem("userType") === "unit") {
+      title = `Let's Smile Registrations - ${unit}`;
+    } else {
+      title = `Let's Smile Registrations - ${sector}${
+        filterUnit ? ` / ${filterUnit}` : ""
+      }`;
+    }
+
+    const date = new Date()
+      .toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .replaceAll("/", "-");
 
     doc.setFontSize(14);
     doc.setTextColor(11, 107, 90);
@@ -260,70 +275,6 @@ export default function ViewPage() {
     }
   };
 
-  // 📊 Show unit count for the selected sector only + WhatsApp share
-  //   const showUnitCounts = () => {
-  //     // Filter records for selected/fixed sector
-  //     const sectorRecords = sector
-  //       ? records.filter((r) => r.sector === sector)
-  //       : records;
-
-  //     // Group by unit
-  //     const counts = sectorRecords.reduce((acc, curr) => {
-  //       if (!acc[curr.unit]) acc[curr.unit] = 0;
-  //       acc[curr.unit]++;
-  //       return acc;
-  //     }, {});
-
-  //     // Create text summary
-
-  //     const selectedUnits = unitList[sector] || []; // fallback to empty array if not found
-
-  //     const messageText = selectedUnits
-  //       .map((unit) => ({
-  //         unit,
-  //         count: counts[unit] || 0,
-  //       }))
-  //       .sort((a, b) => b.count - a.count)
-  //       .map(({ unit, count }) => `*#* ${unit} ---: *${count}*`)
-  //       .join("\n");
-
-  //     const shareText = `\`\`\`⭐ SMILE Friends List ⭐\`\`\`
-  // 📋 *UNIT STATUS*
-  // ────────────────
-  // ${messageText}
-  // ────────────────
-  // 🏘️ *SSF* ${sector || "All Sectors"} Sector
-  // 💬 © Smile Club`;
-
-  //     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-
-  //     // HTML formatted for SweetAlert popup
-  //     const messageHTML = Object.entries(counts)
-  //       .map(([unit, count]) => `${unit}: ${count}`)
-  //       .join("<br>");
-
-  //     Swal.fire({
-  //       title: `📊 Unit Status ${sector ? ` (${sector} Sector)` : ""}`,
-  //       html:
-  //         (messageHTML || "No records found for this sector.") +
-  //         `<br><br><a href="${whatsappLink}" target="_blank"
-  //           style="
-  //             display:inline-block;
-  //             padding:8px 16px;
-  //             background-color:#25D366;
-  //             color:white;
-  //             border-radius:8px;
-  //             text-decoration:none;
-  //             font-weight:600;
-  //           ">
-  //           📲 Share on WhatsApp
-  //         </a>`,
-  //       icon: "info",
-  //       confirmButtonText: "Close",
-  //       confirmButtonColor: "#0b6b5a",
-  //     });
-  //   };
-
   const showUnitCounts = () => {
     // Filter records for selected/fixed sector
     const sectorRecords = sector
@@ -350,14 +301,16 @@ export default function ViewPage() {
 
     // WhatsApp message
 
-    const date = new Date().toLocaleString("en-IN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+    const date = new Date()
+      .toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .replaceAll("/", "-");
 
     const totalUnits = sortedUnits.length;
     const participatedUnits = sortedUnits.filter((u) => u.count > 0).length;
@@ -376,7 +329,7 @@ ${messageText}
 *Total: ${totalMembers}/${participatedUnits}/${totalUnits}*
 ────────────────
 *Generated On:*
-_${date.replaceAll("/", "-")}_
+_${date}_
 ────────────────
 *SSF ${sector || "All Sectors"}* Sector
 © Let's Smile Club`;
@@ -556,7 +509,7 @@ _${date.replaceAll("/", "-")}_
                 className="export-btn"
                 style={{ background: "#0b6b5a" }}
                 onClick={showUnitCounts}>
-                📊 Unit Counts
+                📊 Unit Status
               </button>
             )}
           </div>
