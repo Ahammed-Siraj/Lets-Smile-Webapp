@@ -349,15 +349,30 @@ export default function ViewPage() {
       .sort((a, b) => b.count - a.count);
 
     // WhatsApp message
+
+    const date = new Date().toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    const totalUnits = sortedUnits.length;
+    const participatedUnits = sortedUnits.filter((u) => u.count > 0).length;
+    const totalMembers = sortedUnits.reduce((sum, u) => sum + u.count, 0);
     const messageText = sortedUnits
       .map(({ unit, count }) => `*⏺* ${unit} ---: *${count}*`)
       .join("\n");
-    const date = new Date().toLocaleString();
     const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
-📊 *UNIT STATUS*
-🗓 \`Generated On: \n${date}\`
+*UNIT STATUS*
 ────────────────
 ${messageText}
+
+📊 *Total: ${totalMembers}/${participatedUnits}* /${totalUnits}
+────────────────
+🗓 _Generated On:_
+     _${date}_
 ────────────────
 *SSF ${sector || "All Sectors"}* Sector
 © Let's Smile Club`;
