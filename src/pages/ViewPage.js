@@ -352,10 +352,10 @@ export default function ViewPage() {
     const messageText = sortedUnits
       .map(({ unit, count }) => `*⏺* ${unit} ---: *${count}*`)
       .join("\n");
-
+    const date = new Date().toLocaleString();
     const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
 📊 *UNIT STATUS*
-🗓 \`\Generated On: ${date}\`\
+🗓 \`Generated On: \n${date}\`
 ────────────────
 ${messageText}
 ────────────────
