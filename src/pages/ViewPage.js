@@ -358,6 +358,7 @@ export default function ViewPage() {
       minute: "2-digit",
       hour12: true,
     });
+
     const totalUnits = sortedUnits.length;
     const participatedUnits = sortedUnits.filter((u) => u.count > 0).length;
     const totalMembers = sortedUnits.reduce((sum, u) => sum + u.count, 0);
@@ -374,7 +375,8 @@ ${messageText}
 
 *Total: ${totalMembers}/${participatedUnits}/${totalUnits}*
 ────────────────
-_Generated On: ${date}_
+*Generated On:*
+_${date.replaceAll("/", "-")}_
 ────────────────
 *SSF ${sector || "All Sectors"}* Sector
 © Let's Smile Club`;
