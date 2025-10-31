@@ -100,7 +100,8 @@ export default function HomePage() {
               justifyContent: "center",
               gap: "12px",
             }}>
-            <Link to="/login" style={{ display: "none" }}>
+            {/* style={{ display: "none" }} */}
+            <Link to="/login">
               <button
                 style={{
                   borderRadius: "8px",
@@ -113,7 +114,7 @@ export default function HomePage() {
                   transition: "0.3s",
                 }}
                 onClick={() => {
-                  localStorage.setItem("userType", "admin");
+                  localStorage.setItem("userType", "division");
                 }}
                 onMouseOver={(e) => (e.target.style.background = "#128a70")}
                 onMouseOut={(e) => (e.target.style.background = "#0b6b5a")}>

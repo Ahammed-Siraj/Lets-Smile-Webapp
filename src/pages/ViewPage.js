@@ -13,8 +13,8 @@ export default function ViewPage() {
   const [records, setRecords] = useState([]);
   const [filterUnit, setFilterUnit] = useState("");
   const [filterName, setFilterName] = useState("");
-  const sector = localStorage.getItem("sector") || ""; // ✅ fixed sector from login
-  const unit = localStorage.getItem("unit") || ""; // ✅ fixed unit from login
+  const [sector, setSector] = useState(localStorage.getItem("sector") || "");
+  const [unit, setUnit] = useState(localStorage.getItem("unit") || "");
   const userType = localStorage.getItem("userType"); // "sector" or "unit"
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -85,21 +85,41 @@ export default function ViewPage() {
       : true;
     return matchSector && matchUnit && matchName;
   });
-  const totalPages = Math.ceil(filtered.length / recordsPerPage);
 
-  // 📄 Export filtered data to PDF
+  const totalPages = Math.ceil(filtered.length / recordsPerPage);
 
   const exportPDF = async () => {
     const logoWidth = 15;
     const logoHeight = 11;
 
-    // Sort data by Unit → Name
-    const sortedData = [...filtered].sort((a, b) => {
-      if (a.unit === b.unit) return a.name.localeCompare(b.name);
-      return a.unit.localeCompare(b.unit);
-    });
+    // === 🌈 Sort Logic Based on Login Type ===
+    let sortedData;
+    const userType = localStorage.getItem("userType");
+    const division = localStorage.getItem("division");
+    //const sector = localStorage.getItem("sector");
+    const unit = localStorage.getItem("unit");
 
-    // Create A4 PDF
+    if (userType === "division") {
+      // Sort by Sector → Unit → Name
+      sortedData = [...filtered].sort((a, b) => {
+        if (a.sector === b.sector) {
+          if (a.unit === b.unit) return a.name.localeCompare(b.name);
+          return a.unit.localeCompare(b.unit);
+        }
+        return a.sector.localeCompare(b.sector);
+      });
+    } else if (userType === "sector") {
+      // Sort by Unit → Name
+      sortedData = [...filtered].sort((a, b) => {
+        if (a.unit === b.unit) return a.name.localeCompare(b.name);
+        return a.unit.localeCompare(b.unit);
+      });
+    } else {
+      // Unit login — sort only by Name
+      sortedData = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    // === 🧾 PDF Setup ===
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
@@ -108,14 +128,14 @@ export default function ViewPage() {
 
     const pageWidth = doc.internal.pageSize.getWidth();
 
-    // === 🌈 Draw gradient header ===
+    // === 🌈 Gradient Header ===
     const gradientHeight = 16;
-    const gradientSteps = 100; // smoother gradient
+    const gradientSteps = 100;
     for (let i = 0; i <= gradientSteps; i++) {
       const ratio = i / gradientSteps;
-      const r = 116 + ratio * (172 - 116); // interpolate R (74ebd5 → ACB6E5)
-      const g = 235 + ratio * (182 - 235); // G
-      const b = 213 + ratio * (229 - 213); // B
+      const r = 116 + ratio * (172 - 116);
+      const g = 235 + ratio * (182 - 235);
+      const b = 213 + ratio * (229 - 213);
       doc.setFillColor(r, g, b);
       doc.rect(
         (pageWidth / gradientSteps) * i,
@@ -133,14 +153,23 @@ export default function ViewPage() {
       console.warn("Logo not found or failed to load:", err);
     }
 
-    // === 🧾 Title + Date
-    let title;
-    if (localStorage.getItem("userType") === "unit") {
-      title = `Let's Smile Registrations - ${unit}`;
-    } else {
+    // === 🧾 Dynamic Title ===
+    let title = "";
+
+    if (userType === "division") {
+      if (filterUnit) {
+        title = `Let's Smile Registrations - SSF ${filterUnit}`;
+      } else if (sector) {
+        title = `Let's Smile Registrations - SSF ${sector}`;
+      } else {
+        title = `Let's Smile Registrations - SSF ${division}`;
+      }
+    } else if (userType === "sector") {
       title = `Let's Smile Registrations - ${sector}${
         filterUnit ? ` / ${filterUnit}` : ""
       }`;
+    } else if (userType === "unit") {
+      title = `Let's Smile Registrations - ${unit}`;
     }
 
     const date = new Date()
@@ -154,60 +183,79 @@ export default function ViewPage() {
       })
       .replaceAll("/", "-");
 
-    doc.setFontSize(14);
+    doc.setFontSize(13);
     doc.setTextColor(11, 107, 90);
-    doc.text(title, logoWidth + 22, (logoHeight + 10) / 2);
+    doc.text(title, pageWidth / 2, (logoHeight + 10) / 2, { align: "center" });
 
     doc.setFontSize(10);
     doc.setTextColor(70);
     doc.text(`Generated on: ${date}`, 14, gradientHeight + 8);
 
-    // Determine if the user is logged in as a specific sector
-    const isSectorUser = localStorage.getItem("sector"); // or check localStorage if stored there
+    // === 🧮 Dynamic Table Head ===
+    let tableHead;
+    if (userType === "division") {
+      tableHead = [
+        [
+          "No",
+          "Sector",
+          "Unit",
+          "Name",
+          "Class",
+          "School",
+          "Age",
+          "Father",
+          "Number",
+        ],
+      ];
+    } else if (userType === "sector") {
+      tableHead = [
+        ["No", "Unit", "Name", "Class", "School", "Age", "Father", "Number"],
+      ];
+    } else {
+      tableHead = [
+        ["No", "Name", "Class", "School", "Age", "Father", "Number"],
+      ];
+    }
 
-    // Define table head dynamically
-    const tableHead = isSectorUser
-      ? [["No", "Unit", "Name", "Class", "School", "Age", "Father", "Number"]]
-      : [
-          [
-            "No",
-            "Sector",
-            "Unit",
-            "Name",
-            "Class",
-            "School",
-            "Age",
-            "Father",
-            "Number",
-          ],
+    // === 🧍 Table Body ===
+    const tableBody = sortedData.map((i, index) => {
+      if (userType === "division") {
+        return [
+          index + 1,
+          i.sector,
+          i.unit,
+          i.name,
+          i.className,
+          i.school,
+          i.age,
+          i.fatherName,
+          { content: i.number, link: `tel:${i.number}` },
         ];
+      } else if (userType === "sector") {
+        return [
+          index + 1,
+          i.unit,
+          i.name,
+          i.className,
+          i.school,
+          i.age,
+          i.fatherName,
+          { content: i.number, link: `tel:${i.number}` },
+        ];
+      } else {
+        return [
+          index + 1,
+          i.name,
+          i.className,
+          i.school,
+          i.age,
+          i.fatherName,
+          { content: i.number, link: `tel:${i.number}` },
+        ];
+      }
+    });
 
-    // Define table body dynamically
-    const tableBody = sortedData.map((i, index) =>
-      isSectorUser
-        ? [
-            index + 1,
-            i.unit,
-            i.name,
-            i.className,
-            i.school,
-            i.age,
-            i.fatherName,
-            { content: i.number, link: `tel:${i.number}` },
-          ]
-        : [
-            index + 1,
-            i.sector,
-            i.unit,
-            i.name,
-            i.className,
-            i.school,
-            i.age,
-            i.fatherName,
-            { content: i.number, link: `tel:${i.number}` },
-          ]
-    );
-
+    // === 📋 Table Render ===
     autoTable(doc, {
       head: tableHead,
       body: tableBody,
@@ -233,11 +281,9 @@ export default function ViewPage() {
       },
     });
 
-    // === 💾 Preview + Mobile-friendly Download ===
+    // === 💾 Preview + Mobile Download ===
     const pdfBlob = doc.output("blob");
     const pdfUrl = URL.createObjectURL(pdfBlob);
-
-    // Detect if on mobile
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     if (isMobile) {
@@ -254,7 +300,7 @@ export default function ViewPage() {
         if (result.isConfirmed) {
           const link = document.createElement("a");
           link.href = pdfUrl;
-          link.download = `Let's_Smile_${sector || "All"}.pdf`;
+          link.download = `Let's_Smile_${division || sector || "All"}.pdf`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -270,37 +316,16 @@ export default function ViewPage() {
         }
       });
     } else {
-      // Desktop – open preview tab
       window.open(pdfUrl, "_blank");
     }
   };
 
-  const showUnitCounts = () => {
-    // Filter records for selected/fixed sector
-    const sectorRecords = sector
-      ? records.filter((r) => r.sector === sector)
-      : records;
+  const showMembersStatus = () => {
+    const userType = localStorage.getItem("userType");
+    const division = localStorage.getItem("division");
+    const sector = localStorage.getItem("sector");
 
-    // Group by unit
-    const counts = sectorRecords.reduce((acc, curr) => {
-      if (!acc[curr.unit]) acc[curr.unit] = 0;
-      acc[curr.unit]++;
-      return acc;
-    }, {});
-
-    // Get all units for this sector
-    const selectedUnits = unitList[sector] || [];
-
-    // Build and sort list
-    const sortedUnits = selectedUnits
-      .map((unit) => ({
-        unit,
-        count: counts[unit] || 0,
-      }))
-      .sort((a, b) => b.count - a.count);
-
-    // WhatsApp message
-
+    // === 📅 Common Date Formatting ===
     const date = new Date()
       .toLocaleString("en-IN", {
         day: "2-digit",
@@ -312,21 +337,181 @@ export default function ViewPage() {
       })
       .replaceAll("/", "-");
 
+    // === 🟢 DIVISION LOGIN ===
+    if (userType === "division") {
+      // Create a list of all sectors in this division
+      const allSectors = Object.keys(unitList);
+
+      // Group all records by sector
+      const sectorGroups = records.reduce((acc, curr) => {
+        if (!acc[curr.sector]) acc[curr.sector] = [];
+        acc[curr.sector].push(curr);
+        return acc;
+      }, {});
+
+      // Generate stats for ALL sectors (even if empty)
+      const sortedSectors = allSectors
+        .map((sectorName) => {
+          const sectorRecords = sectorGroups[sectorName] || [];
+          const unitsInSector = unitList[sectorName] || [];
+
+          // Count members per unit
+          const counts = sectorRecords.reduce((acc, curr) => {
+            if (!acc[curr.unit]) acc[curr.unit] = 0;
+            acc[curr.unit]++;
+            return acc;
+          }, {});
+
+          const totalUnits = unitsInSector.length;
+          const participatedUnits = unitsInSector.filter(
+            (u) => counts[u] > 0
+          ).length;
+          const totalMembers = Object.values(counts).reduce((a, b) => a + b, 0);
+
+          return {
+            sector: sectorName,
+            totalMembers,
+            participatedUnits,
+            totalUnits,
+          };
+        })
+        .sort((a, b) => b.totalMembers - a.totalMembers);
+
+      // Division summary totals
+      const grandTotalMembers = sortedSectors.reduce(
+        (sum, s) => sum + s.totalMembers,
+        0
+      );
+      const grandParticipatedUnits = sortedSectors.reduce(
+        (sum, s) => sum + s.participatedUnits,
+        0
+      );
+      const grandTotalUnits = sortedSectors.reduce(
+        (sum, s) => sum + s.totalUnits,
+        0
+      );
+
+      // 🟢 WhatsApp message for Division
+      const messageText = sortedSectors
+        .map(
+          ({ sector, totalMembers, participatedUnits, totalUnits }) =>
+            `*⏺* ${sector} ---: *${totalMembers}/${participatedUnits}*/${totalUnits}`
+        )
+        .join("\n");
+
+      const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
+🔗 Registration: 
+https://smile-manjeshwar.vercel.app
+
+📊 *SECTOR STATUS*
+────────────────
+${messageText}
+
+*Division Total:* ${grandTotalMembers}/${grandParticipatedUnits}/${grandTotalUnits}
+────────────────
+*Generated On:*
+_${date}_
+────────────────
+*SSF ${division || "All Divisions"}* Division
+© Let's Smile Club`;
+
+      const whatsappLink = `https://wa.me/?text=${encodeURIComponent(
+        shareText
+      )}`;
+
+      // 🟢 SweetAlert layout
+      const messageHTML = `
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 6px;
+        text-align: center;
+        margin-top: 10px;
+      ">
+        ${sortedSectors
+          .map(
+            ({ sector, totalMembers, participatedUnits, totalUnits }) => `
+            <div style="
+              background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+              padding: 6px;
+              border-radius: 10px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              color: #0b6b5a;
+              font-weight: 600;
+            ">
+              <div style="font-size: 1.1em;">${sector}</div>
+              <div style="font-size: 1.3em; font-weight: bold;">${totalMembers}</div>
+              <div style="font-size: 0.9em;">${participatedUnits}/${totalUnits}</div>
+            </div>
+          `
+          )
+          .join("")}
+      </div>
+      <br>
+      <a href="${whatsappLink}" target="_blank"
+        style="
+          display:inline-block;
+          padding:10px 20px;
+          background-color:#25D366;
+          color:white;
+          border-radius:8px;
+          text-decoration:none;
+          font-weight:600;
+        ">
+        📲 Share on WhatsApp
+      </a>
+    `;
+
+      Swal.fire({
+        title: `📊 Sector Status (${division || "Division"})`,
+        html: messageHTML,
+        icon: "info",
+        width: "600px",
+        confirmButtonText: "Close",
+        confirmButtonColor: "#0b6b5a",
+        background: "#f8fdfd",
+      });
+
+      return; // stop here for division login
+    }
+
+    // === 🟠 SECTOR LOGIN ===
+    const sectorRecords = sector
+      ? records.filter((r) => r.sector === sector)
+      : records;
+
+    const counts = sectorRecords.reduce((acc, curr) => {
+      if (!acc[curr.unit]) acc[curr.unit] = 0;
+      acc[curr.unit]++;
+      return acc;
+    }, {});
+
+    const selectedUnits = unitList[sector] || [];
+
+    const sortedUnits = selectedUnits
+      .map((unit) => ({
+        unit,
+        count: counts[unit] || 0,
+      }))
+      .sort((a, b) => b.count - a.count);
+
     const totalUnits = sortedUnits.length;
     const participatedUnits = sortedUnits.filter((u) => u.count > 0).length;
     const totalMembers = sortedUnits.reduce((sum, u) => sum + u.count, 0);
+
     const messageText = sortedUnits
       .map(({ unit, count }) => `*⏺* ${unit} ---: *${count}*`)
       .join("\n");
+
     const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
-🔗Registration: 
+🔗 Registration: 
 https://smile-manjeshwar.vercel.app
 
 📊 *UNIT STATUS*
 ────────────────
 ${messageText}
 
-*Total: ${totalMembers}/${participatedUnits}/${totalUnits}*
+*Total:* ${totalMembers}/${participatedUnits}/${totalUnits}
 ────────────────
 *Generated On:*
 _${date}_
@@ -336,7 +521,6 @@ _${date}_
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
-    // Stylish HTML for SweetAlert
     const messageHTML = `
     <div style="
       display: grid;
@@ -347,7 +531,7 @@ _${date}_
     ">
       ${sortedUnits
         .map(
-          ({ unit, count }, idx) => `
+          ({ unit, count }) => `
           <div style="
             background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
             padding: 5px;
@@ -378,9 +562,8 @@ _${date}_
     </a>
   `;
 
-    // Show SweetAlert
     Swal.fire({
-      title: `📊 Unit Status ${sector ? ` (${sector} Sector)` : ""}`,
+      title: `📊 Unit Status ${sector ? `(${sector} Sector)` : ""}`,
       html: messageHTML,
       icon: "info",
       width: "600px",
@@ -440,7 +623,7 @@ _${date}_
             }}>
             <div className="form-group">
               <label>Sector</label>
-              {localStorage.getItem("userType") === "admin" ? (
+              {localStorage.getItem("userType") === "division" ? (
                 <select
                   value={sector}
                   onChange={(e) => {
@@ -503,15 +686,22 @@ _${date}_
             <button className="export-btn" onClick={exportPDF}>
               📄 Export PDF
             </button>
-
-            {localStorage.getItem("userType") !== "unit" && (
-              <button
-                className="export-btn"
-                style={{ background: "#0b6b5a" }}
-                onClick={showUnitCounts}>
-                📊 Unit Status
-              </button>
-            )}
+            {localStorage.getItem("userType") !== "unit" &&
+              (localStorage.getItem("userType") === "division" ? (
+                <button
+                  className="export-btn"
+                  style={{ background: "#0b6b5a" }}
+                  onClick={showMembersStatus}>
+                  📊 Sector Status
+                </button>
+              ) : (
+                <button
+                  className="export-btn"
+                  style={{ background: "#0b6b5a" }}
+                  onClick={showMembersStatus}>
+                  📊 Unit Status
+                </button>
+              ))}
           </div>
         </div>
       </div>
@@ -560,31 +750,7 @@ _${date}_
               <th className="desktop-only">Number</th>
             </tr>
           </thead>
-          {/* <tbody>
-            {filtered.map((r) => (
-              <tr
-                key={r._id}
-                className="table-row"
-                onClick={() => setSelectedRecord(r)}
-                style={{ cursor: "pointer" }}>
-                <td className="desktop-only">{r.sector}</td>
-                <td>{r.unit}</td>
-                <td>{r.name}</td>
-                <td>{r.age}</td>
-                <td>{r.className}</td>
-                <td className="desktop-only">{r.school}</td>
-                <td className="desktop-only">{r.fatherName}</td>
-                <td className="desktop-only">{r.number}</td>
-              </tr>
-            ))}
-            {filtered.length === 0 && (
-              <tr>
-                <td colSpan="8" style={{ textAlign: "center" }}>
-                  No records found
-                </td>
-              </tr>
-            )}
-          </tbody> */}
+
           <tbody>
             {filtered
               .slice(

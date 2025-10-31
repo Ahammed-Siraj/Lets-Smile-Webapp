@@ -81,31 +81,6 @@ export default function EntryPage() {
         📝 Let’s Get Started
       </h2>
 
-      {/* <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-          padding: "20px 20px",
-          borderRadius: "10px",
-          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
-          color: "#333",
-          maxWidth: "900px",
-          margin: "20px auto",
-        }}>
-        <h2
-          style={{
-            fontSize: "1.5rem",
-            fontWeight: "500",
-            marginBottom: "10px",
-            color: "#0b6b5a",
-          }}>
-          📝 Let’s Get Started
-        </h2>
-      </div> */}
       <form
         onSubmit={handleSubmit}
         style={{

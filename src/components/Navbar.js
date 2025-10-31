@@ -8,7 +8,7 @@ export default function Navbar() {
   const token = localStorage.getItem("token");
   const sector = localStorage.getItem("sector");
   const unit = localStorage.getItem("unit");
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  const division = localStorage.getItem("division");
 
   const logout = () => {
     localStorage.clear();
@@ -71,7 +71,12 @@ export default function Navbar() {
             <span style={{ fontSize: "0.9rem", whiteSpace: "nowrap" }}>
               User:{" "}
               <strong>
-                {localStorage.getItem("userType") === "unit" ? unit : sector}
+                {/* {localStorage.getItem("userType") === "unit" ? unit : sector} */}
+                {localStorage.getItem("userType") === "unit"
+                  ? unit
+                  : localStorage.getItem("userType") === "sector"
+                  ? sector
+                  : division}
               </strong>
             </span>
           )}
@@ -124,11 +129,6 @@ export default function Navbar() {
           {token && (
             <Link to="/view" style={linkStyle("/view")}>
               View
-            </Link>
-          )}
-          {isAdmin && (
-            <Link to="/admin" style={linkStyle("/admin")}>
-              Admin
             </Link>
           )}
         </div>
