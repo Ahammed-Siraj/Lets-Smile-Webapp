@@ -2,6 +2,9 @@
 //"BADAJE",
 // "MADANGHAL",
 //"POYYA",
+// "CHOUKI",
+//     "Chowki",
+// "BATIYADUKKA",
 
 export const unitList = {
   BAKRABAIL: [
@@ -46,7 +49,6 @@ export const unitList = {
     "AMAI",
     "BACHALIKE",
     "BAKIMAR",
-    "BATIYADUKKA",
     "GERUKATE",
     "KEDUMBADI",
     "KEDUMBADI BAIL",
@@ -62,6 +64,7 @@ export const unitList = {
     "HARWAR",
     "HYGLODHI",
     "IRSHAD NAGAR",
+    "KUCHIKAD",
     "KUNJATHUR",
     "MOULANA ROAD",
     "SANNADKA",
@@ -74,8 +77,6 @@ export const unitList = {
     "AKKARA",
     "BEJJA",
     "CHECKPOST",
-    "CHOUKI",
-    "Chowki",
     "GUDDAGERI",
     "HOSANGADI",
     "MAJIBAIL",
