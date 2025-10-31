@@ -799,7 +799,7 @@ _${date}_
             }}
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}>
-            ◀ Prev
+            ◀
           </button>
 
           {[...Array(totalPages)].map((_, i) => (
@@ -828,7 +828,7 @@ _${date}_
             }}
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}>
-            Next ▶
+            ▶
           </button>
         </div>
       </div>
