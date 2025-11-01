@@ -20,7 +20,8 @@ export default function Navbar() {
     background: location.pathname === path ? "#f7f7f8" : "transparent",
     color: location.pathname === path ? "#0b6b5a" : "#74ebd5",
     fontWeight: location.pathname === path ? "bold" : "normal",
-    padding: "6px 30px",
+    padding: "5px 20px",
+    marginTop: "3px",
     borderRadius: "5px 5px 0 0",
     transition: "all 0.3s ease",
   });

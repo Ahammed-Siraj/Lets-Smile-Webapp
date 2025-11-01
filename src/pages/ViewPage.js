@@ -426,7 +426,7 @@ _${date}_
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
         gap: 6px;
         text-align: center;
-        margin-top: 10px;
+        margin-top: 6px;
       ">
         ${sortedSectors
           .map(
@@ -434,13 +434,13 @@ _${date}_
             <div style="
               background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
               padding: 6px;
-              border-radius: 10px;
+              border-radius: 5px;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
               color: #0b6b5a;
-              font-weight: 600;
+              font-weight: 500;
             ">
-              <div style="font-size: 1.1em;">${sector}</div>
-              <div style="font-size: 1.3em; font-weight: bold;">${totalMembers}</div>
+              <div style="font-size: 1em;">${sector}</div>
+              <div style="font-size: 1.1em; font-weight: bold;">${totalMembers}</div>
               <div style="font-size: 0.9em;">${participatedUnits}/${totalUnits}</div>
             </div>
           `
@@ -527,7 +527,7 @@ _${date}_
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 5px;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 8px;
     ">
       ${sortedUnits
         .map(
@@ -540,8 +540,8 @@ _${date}_
             color: #0b6b5a;
             font-weight: semibold;
           ">
-            <div style="font-size: 1.1em;">${unit}</div>
-            <div style="font-size: 1.3em; font-weight: bold;">${count}</div>
+            <div style="font-size: 1em;">${unit}</div>
+            <div style="font-size: 1.2em; font-weight: bold;">${count}</div>
           </div>
         `
         )

@@ -153,22 +153,22 @@ export default function EntryPage() {
         </div>
         <div className="form-group">
           <label>
-            <strong>Class</strong>
+            <strong>School Name</strong>
           </label>
           <input
-            name="className"
-            value={formData.className}
+            name="school"
+            value={formData.school}
             onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
           <label>
-            <strong>School</strong>
+            <strong>Class</strong>
           </label>
           <input
-            name="school"
-            value={formData.school}
+            name="className"
+            value={formData.className}
             onChange={handleChange}
             required
           />
