@@ -158,18 +158,18 @@ export default function ViewPage() {
 
     if (userType === "division") {
       if (filterUnit) {
-        title = `Let's Smile Registrations - SSF ${filterUnit}`;
+        title = `Let's Smile Registrations - SSF ${filterUnit} UNIT`;
       } else if (sector) {
-        title = `Let's Smile Registrations - SSF ${sector}`;
+        title = `Let's Smile Registrations - SSF ${sector} SECTOR`;
       } else {
-        title = `Let's Smile Registrations - SSF ${division}`;
+        title = `Let's Smile Registrations - SSF ${division} DIVISION`;
       }
     } else if (userType === "sector") {
       title = `Let's Smile Registrations - ${sector}${
         filterUnit ? ` / ${filterUnit}` : ""
-      }`;
+      } SECTOR`;
     } else if (userType === "unit") {
-      title = `Let's Smile Registrations - ${unit}`;
+      title = `Let's Smile Registrations - ${unit} UNIT`;
     }
 
     const date = new Date()
@@ -439,8 +439,8 @@ _${date}_
               color: #0b6b5a;
               font-weight: 500;
             ">
-              <div style="font-size: 1em;">${sector}</div>
-              <div style="font-size: 1.1em; font-weight: bold;">${totalMembers}</div>
+              <div style="font-size: 1em; font-weight: bold;">${sector}</div>
+              <div style="font-size: 1.2em; font-weight: bold;">${totalMembers}</div>
               <div style="font-size: 0.9em;">${participatedUnits}/${totalUnits}</div>
             </div>
           `
@@ -540,7 +540,7 @@ _${date}_
             color: #0b6b5a;
             font-weight: semibold;
           ">
-            <div style="font-size: 1em;">${unit}</div>
+            <div style="font-size: 1em; font-weight: bold;">${unit}</div>
             <div style="font-size: 1.2em; font-weight: bold;">${count}</div>
           </div>
         `

@@ -173,7 +173,7 @@ export default function EntryPage() {
             required
           />
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>
             <strong>Age</strong>
           </label>
@@ -184,7 +184,28 @@ export default function EntryPage() {
             onChange={handleChange}
             required
           />
+        </div> */}
+        <div className="form-group">
+          <label>
+            <strong>Age</strong>
+          </label>
+          <select
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+            required>
+            <option value="">Select Age</option>
+            {[...Array(8)].map((_, i) => {
+              const age = i + 7;
+              return (
+                <option key={age} value={age}>
+                  {age}
+                </option>
+              );
+            })}
+          </select>
         </div>
+
         <div className="form-group">
           <label>
             <strong>Father Name</strong>
