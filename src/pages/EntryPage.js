@@ -24,6 +24,13 @@ export default function EntryPage() {
     const loggedUnit = localStorage.getItem("unit");
     if (loggedUnit) setUnit(loggedUnit);
   }, []);
+  // Helper function (place this above or outside your component)
+  function getOrdinalSuffix(n) {
+    if (n === 1) return "st";
+    if (n === 2) return "nd";
+    if (n === 3) return "rd";
+    return "th";
+  }
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -162,29 +169,27 @@ export default function EntryPage() {
             required
           />
         </div>
+
         <div className="form-group">
           <label>
             <strong>Class</strong>
           </label>
-          <input
+          <select
             name="className"
             value={formData.className}
             onChange={handleChange}
-            required
-          />
+            required>
+            <option value="">Select Class</option>
+            {[...Array(10)].map((_, i) => {
+              const classLabel = `${i + 1}${getOrdinalSuffix(i + 1)} Std`;
+              return (
+                <option key={classLabel} value={classLabel}>
+                  {classLabel}
+                </option>
+              );
+            })}
+          </select>
         </div>
-        {/* <div className="form-group">
-          <label>
-            <strong>Age</strong>
-          </label>
-          <input
-            name="age"
-            value={formData.age}
-            type="number"
-            onChange={handleChange}
-            required
-          />
-        </div> */}
         <div className="form-group">
           <label>
             <strong>Age</strong>
