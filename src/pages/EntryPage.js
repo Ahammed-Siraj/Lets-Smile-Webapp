@@ -233,10 +233,15 @@ export default function EntryPage() {
             name="number"
             value={formData.number}
             onChange={handleChange}
-            type="number"
+            type="tel"
+            pattern="[0-9]{10}"
+            minLength="10"
+            maxLength="10"
             required
+            placeholder="Enter 10-digit number"
           />
         </div>
+
         <div
           style={{
             display: "flex",
