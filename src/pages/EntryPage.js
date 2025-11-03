@@ -6,6 +6,9 @@ import { unitList } from "../constants/datalist";
 export default function EntryPage() {
   const [sector, setSector] = useState("");
   const [unit, setUnit] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     className: "",
@@ -14,7 +17,6 @@ export default function EntryPage() {
     fatherName: "",
     number: "",
   });
-  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
     const loggedSector = localStorage.getItem("sector");
@@ -37,6 +39,9 @@ export default function EntryPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // prevent multiple clicks
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     try {
       const headers = authHeader();
       const payload = { ...formData, sector, unit };
@@ -44,10 +49,10 @@ export default function EntryPage() {
         await axios.put(`${API_BASE_URL}/form/${editingId}`, payload, {
           headers,
         });
-        alert("Updated");
+        Swal.fire("Updated!", "Record updated successfully.", "success");
       } else {
         await axios.post(`${API_BASE_URL}/form`, payload, { headers });
-        alert("Saved");
+        Swal.fire("Saved!", "Record added successfully.", "success");
       }
       setFormData({
         name: "",
@@ -62,6 +67,8 @@ export default function EntryPage() {
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.message || "Error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -259,7 +266,7 @@ export default function EntryPage() {
               fontSize: "16px",
               fontWeight: "600",
             }}>
-            {editingId ? "UPDATE" : "SUBMIT"}
+            {isSubmitting ? "Please wait..." : editingId ? "UPDATE" : "SUBMIT"}
           </button>
         </div>
       </form>

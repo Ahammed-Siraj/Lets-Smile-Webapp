@@ -4,10 +4,10 @@ import { API_BASE_URL, authHeader } from "../api";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { unitList } from "../constants/datalist";
-import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Swal from "sweetalert2";
 import smileclublogo from "../images/smileclublogo.png";
+import { Modal, Button, Form } from "react-bootstrap";
 
 export default function ViewPage() {
   const [records, setRecords] = useState([]);
@@ -19,6 +19,9 @@ export default function ViewPage() {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10; // number of rows per page
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState(selectedRecord || {});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchRecords();
@@ -34,40 +37,47 @@ export default function ViewPage() {
     }
   };
 
+  // 🗑️ Delete record
   const handleDelete = async () => {
-    if (!selectedRecord) {
-      Swal.fire("No record selected", "Please select a record first.", "info");
-      return;
-    }
-
-    // Confirm delete
     const confirm = await Swal.fire({
       title: "Are you sure?",
-      text: "This action cannot be undone!",
+      text: "This record will be permanently deleted.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#e63946",
+      cancelButtonColor: "#0b6b5a",
+      confirmButtonText: "Yes, Delete it!",
     });
-
     if (!confirm.isConfirmed) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/registration/${selectedRecord._id}`, {
-        headers: authHeader(),
-      });
-
+      await axios.delete(`${API_BASE_URL}/registration/${formData._id}`);
       Swal.fire("Deleted!", "Record deleted successfully.", "success");
-
-      // Refresh the table/list
       fetchRecords();
-
-      // Clear selected record
       setSelectedRecord(null);
-    } catch (error) {
-      console.error(error);
-      Swal.fire("Error", "Something went wrong while deleting.", "error");
+    } catch (err) {
+      Swal.fire("Error", "Failed to delete record.", "error");
+    }
+  };
+
+  // Handle form changes when in edit mode
+  const handleChange = (e) => {
+    if (!isEditing) return;
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  // 📝 Update record logic
+  const handleUpdate = async () => {
+    setLoading(true);
+    try {
+      await axios.put(`${API_BASE_URL}/registration/${formData._id}`, formData);
+      Swal.fire("✅ Updated!", "Record updated successfully.", "success");
+      fetchRecords();
+      setIsEditing(false);
+    } catch (err) {
+      Swal.fire("❌ Error", "Failed to update record.", "error");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -798,26 +808,41 @@ _${date}_
               borderRadius: "8px",
             }}
             disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}>
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
             ◀
           </button>
 
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              style={{
-                background: currentPage === i + 1 ? "#007bff" : "#74ebd5",
-                color: currentPage === i + 1 ? "white" : "#0b6b5a",
-                border: "none",
-                borderRadius: "8px",
-                padding: "6px 10px",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}>
-              {i + 1}
-            </button>
-          ))}
+          {/* Show only 5 numbers dynamically */}
+          {(() => {
+            const visiblePages = 5;
+            let start = Math.max(currentPage - Math.floor(visiblePages / 2), 1);
+            let end = start + visiblePages - 1;
+
+            if (end > totalPages) {
+              end = totalPages;
+              start = Math.max(end - visiblePages + 1, 1);
+            }
+
+            return [...Array(end - start + 1)].map((_, i) => {
+              const page = start + i;
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  style={{
+                    background: currentPage === page ? "#007bff" : "#74ebd5",
+                    color: currentPage === page ? "white" : "#0b6b5a",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "6px 10px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}>
+                  {page}
+                </button>
+              );
+            });
+          })()}
 
           <button
             className="export-btn"
@@ -827,7 +852,9 @@ _${date}_
               borderRadius: "8px",
             }}
             disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}>
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }>
             ▶
           </button>
         </div>
@@ -835,6 +862,7 @@ _${date}_
 
       {/* Modal for Record Details */}
 
+      {/* 💅 Inline Styles */}
       <Modal
         show={!!selectedRecord}
         onHide={() => setSelectedRecord(null)}
@@ -946,7 +974,6 @@ _${date}_
         </Modal.Footer>
       </Modal>
 
-      {/* 💅 Inline Styles */}
       <style jsx>{`
         .filter-card {
           background: #f9fafc;
