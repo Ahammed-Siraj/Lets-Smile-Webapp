@@ -10,7 +10,6 @@ import smileclublogo from "../images/smileclublogo.png";
 import { Modal, Button, Form } from "react-bootstrap";
 
 export default function ViewPage() {
-  const [records, setRecords] = useState([]);
   const [filterUnit, setFilterUnit] = useState("");
   const [filterName, setFilterName] = useState("");
   const [sector, setSector] = useState(localStorage.getItem("sector") || "");
@@ -19,65 +18,80 @@ export default function ViewPage() {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10; // number of rows per page
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(selectedRecord || {});
   const [loading, setLoading] = useState(false);
+  const [records, setRecords] = useState([]);
+  const [formData, setFormData] = useState({});
+  const [editingId, setEditingId] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     fetchRecords();
   }, []);
 
+  // Fetch all records
   const fetchRecords = async () => {
     try {
       const headers = authHeader();
       const res = await axios.get(`${API_BASE_URL}/form`, { headers });
       setRecords(res.data);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error fetching records", error);
     }
   };
 
-  // 🗑️ Delete record
+  // When table row clicked → open modal + load data
+  const handleRowClick = (record) => {
+    setSelectedRecord(record);
+    setEditingId(record._id);
+    setFormData({ ...record }); // clone so formData updates separately
+    setIsEditing(false);
+  };
+
+  // Handle input changes while editing
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Delete record
   const handleDelete = async () => {
-    const confirm = await Swal.fire({
+    Swal.fire({
       title: "Are you sure?",
-      text: "This record will be permanently deleted.",
+      text: "This will permanently delete the record!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#e63946",
       cancelButtonColor: "#0b6b5a",
-      confirmButtonText: "Yes, Delete it!",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`${API_BASE_URL}/form/${editingId}`);
+          Swal.fire("🗑 Deleted!", "Record deleted successfully.", "success");
+          setSelectedRecord(null);
+          fetchRecords();
+        } catch (error) {
+          Swal.fire("❌ Error", "Could not delete record.", "error");
+          console.error(error);
+        }
+      }
     });
-    if (!confirm.isConfirmed) return;
-
-    try {
-      await axios.delete(`${API_BASE_URL}/registration/${formData._id}`);
-      Swal.fire("Deleted!", "Record deleted successfully.", "success");
-      fetchRecords();
-      setSelectedRecord(null);
-    } catch (err) {
-      Swal.fire("Error", "Failed to delete record.", "error");
-    }
   };
 
-  // Handle form changes when in edit mode
-  const handleChange = (e) => {
-    if (!isEditing) return;
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  // 📝 Update record logic
+  // Update record
   const handleUpdate = async () => {
-    setLoading(true);
     try {
-      await axios.put(`${API_BASE_URL}/registration/${formData._id}`, formData);
-      Swal.fire("✅ Updated!", "Record updated successfully.", "success");
-      fetchRecords();
+      const headers = authHeader();
+      const payload = { ...formData };
+      await axios.put(`${API_BASE_URL}/form/${editingId}`, payload, {
+        headers,
+      });
+      Swal.fire("Updated!", "Record updated successfully.", "success");
       setIsEditing(false);
-    } catch (err) {
+      fetchRecords();
+    } catch (error) {
       Swal.fire("❌ Error", "Failed to update record.", "error");
-      console.error(err);
-    } finally {
-      setLoading(false);
+      console.error(error);
     }
   };
 
@@ -638,7 +652,7 @@ _${date}_
                   value={sector}
                   onChange={(e) => {
                     setSector(e.target.value);
-                    setUnit("");
+                    setFilterUnit("");
                   }}>
                   <option value="">All Sectors</option>
                   {Object.keys(unitList).map((sec) => (
@@ -750,6 +764,7 @@ _${date}_
           }}>
           <thead>
             <tr>
+              <th className="desktop-only">No</th>
               <th className="desktop-only">Sector</th>
               <th>Unit</th>
               <th>Name</th>
@@ -767,12 +782,13 @@ _${date}_
                 (currentPage - 1) * recordsPerPage,
                 currentPage * recordsPerPage
               )
-              .map((r) => (
+              .map((r, index) => (
                 <tr
                   key={r._id}
                   className="table-row"
-                  onClick={() => setSelectedRecord(r)}
+                  onClick={() => handleRowClick(r)}
                   style={{ cursor: "pointer" }}>
+                  <td className="desktop-only">{index + 1}</td>
                   <td className="desktop-only">{r.sector}</td>
                   <td>{r.unit}</td>
                   <td>{r.name}</td>
@@ -785,7 +801,7 @@ _${date}_
               ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center" }}>
+                <td colSpan="9" style={{ textAlign: "center" }}>
                   No records found
                 </td>
               </tr>
@@ -860,9 +876,7 @@ _${date}_
         </div>
       </div>
 
-      {/* Modal for Record Details */}
-
-      {/* 💅 Inline Styles */}
+      {/* MODAL */}
       <Modal
         show={!!selectedRecord}
         onHide={() => setSelectedRecord(null)}
@@ -873,7 +887,7 @@ _${date}_
         <Modal.Header
           className="d-flex justify-content-center"
           style={{
-            backgroundColor: "#0b6b5a", // Deep blue header
+            backgroundColor: "#0b6b5a",
             color: "white",
             borderBottom: "none",
           }}>
@@ -883,97 +897,107 @@ _${date}_
         {/* BODY */}
         <Modal.Body
           style={{
-            background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)", // Light pastel background
+            background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
             color: "#333",
             padding: "20px",
             fontSize: "16px",
           }}>
-          {selectedRecord && (
-            <div className="p-2">
-              <div className="record-details">
-                <div className="detail-row">
-                  <span className="label fw-bold">Sector:</span>{" "}
-                  <span className="value">{selectedRecord.sector}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label fw-bold">Unit:</span>{" "}
-                  <span className="value">{selectedRecord.unit}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label fw-bold">Name:</span>{" "}
-                  <span className="value">{selectedRecord.name}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label fw-bold">Class:</span>{" "}
-                  <span className="value">{selectedRecord.className}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label fw-bold">School:</span>{" "}
-                  <span className="value">{selectedRecord.school}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label fw-bold">Age:</span>{" "}
-                  <span className="value">{selectedRecord.age}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label fw-bold">Father:</span>{" "}
-                  <span className="value">{selectedRecord.fatherName}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="label fw-bold">Number:</span>{" "}
-                  <span className="value">{selectedRecord.number}</span>
-                </div>
+          <div className="p-2">
+            {[
+              { label: "Sector", name: "sector" },
+              { label: "Unit", name: "unit" },
+              { label: "Name", name: "name" },
+              { label: "Class", name: "className" },
+              { label: "School", name: "school" },
+              { label: "Age", name: "age" },
+              { label: "Father", name: "fatherName" },
+              { label: "Number", name: "number" },
+            ].map((field) => (
+              <div key={field.name} className="detail-row mb-2">
+                <span className="label fw-bold">{field.label}:</span>{" "}
+                {isEditing ? (
+                  <Form.Control
+                    type="text"
+                    name={field.name}
+                    value={formData[field.name] || ""}
+                    onChange={handleChange}
+                    disabled={field.name === "sector" || field.name === "unit"} // ✅ Disable Sector & Unit
+                    style={{
+                      display: "inline-block",
+                      width: "70%",
+                      marginLeft: "10px",
+                      borderRadius: "8px",
+                      border: "1px solid #ccc",
+                      padding: "2px 8px",
+                      backgroundColor:
+                        field.name === "sector" || field.name === "unit"
+                          ? "#e9ecef" // light grey background for disabled
+                          : "white",
+                    }}
+                  />
+                ) : (
+                  <span className="value ms-1">{formData[field.name]}</span>
+                )}
               </div>
-            </div>
-          )}
+            ))}
+          </div>
         </Modal.Body>
 
         {/* FOOTER */}
         <Modal.Footer
           className="d-flex justify-content-center"
           style={{ backgroundColor: "#f0f8ff", borderTop: "none" }}>
+          {/* Close Button */}
           <Button
             style={{
-              backgroundColor: "#0b6b5a", // Custom blue button
+              backgroundColor: "#0b6b5a",
               border: "none",
               borderRadius: "8px",
               padding: "8px 18px",
               fontWeight: "500",
             }}
-            onClick={() => setSelectedRecord(null)}>
+            onClick={() => {
+              setEditingId("");
+              setIsEditing(false);
+              setSelectedRecord(null);
+            }}>
             Close
           </Button>
 
+          {/* Delete Button */}
           <Button
             style={{
               backgroundColor: "#e63946",
               border: "none",
               borderRadius: "8px",
-              display: "none",
               padding: "8px 18px",
               fontWeight: "500",
               color: "white",
             }}
-            disabled={!selectedRecord}
             onClick={handleDelete}>
             Delete
           </Button>
 
+          {/* Edit / Update Button */}
           <Button
             style={{
-              backgroundColor: "#0b6b5a", // Custom blue button
+              backgroundColor: "#0b6b5a",
               border: "none",
               borderRadius: "8px",
               padding: "8px 18px",
               fontWeight: "500",
-              display: "none",
             }}
-            onClick={() => setSelectedRecord(null)}>
-            Update
+            onClick={() => {
+              if (isEditing) {
+                handleUpdate();
+              } else {
+                setIsEditing(true);
+              }
+            }}>
+            {isEditing ? "Update" : "Edit"}
           </Button>
         </Modal.Footer>
       </Modal>
-
       <style jsx>{`
         .filter-card {
           background: #f9fafc;
