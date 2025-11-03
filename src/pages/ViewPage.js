@@ -324,7 +324,7 @@ export default function ViewPage() {
         if (result.isConfirmed) {
           const link = document.createElement("a");
           link.href = pdfUrl;
-          link.download = `Let's_Smile_${division || sector || "All"}.pdf`;
+          link.download = `Let's_Smile_${title}.pdf`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
