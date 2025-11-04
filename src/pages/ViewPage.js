@@ -13,6 +13,7 @@ export default function ViewPage() {
   const [filterUnit, setFilterUnit] = useState("");
   const [filterName, setFilterName] = useState("");
   const [sector, setSector] = useState(localStorage.getItem("sector") || "");
+
   const [unit, setUnit] = useState(localStorage.getItem("unit") || "");
   const userType = localStorage.getItem("userType"); // "sector" or "unit"
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -347,7 +348,7 @@ export default function ViewPage() {
   const showMembersStatus = () => {
     const userType = localStorage.getItem("userType");
     const division = localStorage.getItem("division");
-    const sector = localStorage.getItem("sector");
+    // const sector = localStorage.getItem("sector");
 
     // === 📅 Common Date Formatting ===
     const date = new Date()
@@ -362,7 +363,7 @@ export default function ViewPage() {
       .replaceAll("/", "-");
 
     // === 🟢 DIVISION LOGIN ===
-    if (userType === "division") {
+    if (userType === "division" && !sector) {
       // Create a list of all sectors in this division
       const allSectors = Object.keys(unitList);
 
@@ -597,6 +598,121 @@ _${date}_
     });
   };
 
+  const allUnitStatus = () => {
+    const userType = localStorage.getItem("userType");
+    const division = localStorage.getItem("division");
+
+    if (userType !== "division") return;
+
+    const allUnits = Object.entries(unitList).flatMap(([sectorName, units]) =>
+      units.map((unit) => ({ sector: sectorName, unit }))
+    );
+
+    // Count members per unit
+    const unitCounts = records.reduce((acc, curr) => {
+      acc[curr.unit] = (acc[curr.unit] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Sort by member count
+    const sortedUnits = allUnits
+      .map(({ sector, unit }) => ({
+        sector,
+        unit,
+        count: unitCounts[unit] || 0,
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    // Totals
+    const totalUnits = sortedUnits.length;
+    const participatedUnits = sortedUnits.filter((u) => u.count > 0).length;
+    const totalMembers = sortedUnits.reduce((sum, u) => sum + u.count, 0);
+
+    // Date
+    const date = new Date()
+      .toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .replaceAll("/", "-");
+
+    // WhatsApp message
+    const messageText = sortedUnits
+      .map(({ unit, count }) => `*⏺* ${unit} ---: *${count}*`)
+      .join("\n");
+
+    const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
+🔗 Registration:
+https://smile-manjeshwar.vercel.app
+
+📊 *UNIT STATUS (All Units in Division)*
+────────────────
+${messageText}
+
+*Total:* ${totalMembers}/${participatedUnits}/${totalUnits}
+────────────────
+*Generated On:*
+_${date}_
+────────────────
+*SSF ${division || "Division"}*
+© Let's Smile Club`;
+
+    const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+
+    // SweetAlert
+    Swal.fire({
+      title: `📊 Unit Status (${division || "Division"})`,
+      html: `
+      <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 5px;
+        text-align: center;
+        margin-top: 8px;
+      ">
+        ${sortedUnits
+          .map(
+            ({ unit, count }) => `
+            <div style="
+              background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+              padding: 5px;
+              border-radius: 10px;
+              color: #0b6b5a;
+              font-weight: 600;
+            ">
+              <div>${unit}</div>
+              <div style="font-size: 1.2em;">${count}</div>
+            </div>
+          `
+          )
+          .join("")}
+      </div>
+      <br>
+      <a href="${whatsappLink}" target="_blank"
+        style="
+          display:inline-block;
+          padding:10px 20px;
+          background-color:#25D366;
+          color:white;
+          border-radius:8px;
+          text-decoration:none;
+          font-weight:600;
+        ">
+        📲 Share on WhatsApp
+      </a>
+    `,
+      icon: "info",
+      width: "600px",
+      confirmButtonText: "Close",
+      confirmButtonColor: "#0b6b5a",
+      background: "#f8fdfd",
+    });
+  };
+
   return (
     <div
       className="container"
@@ -697,19 +813,21 @@ _${date}_
             </div>
           </div>
 
-          {/* Export Button */}
+          {/* Buttons */}
           <div
             className="filter-item"
             style={{
-              alignSelf: "end",
               display: "flex",
-              flexDirection: "row",
-              gap: "10px",
               flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "10px",
             }}>
+            {/* ExportPDF Button */}
             <button className="export-btn" onClick={exportPDF}>
               📄 Export PDF
             </button>
+
+            {/* Sector or Unit Status */}
             {localStorage.getItem("userType") !== "unit" &&
               (localStorage.getItem("userType") === "division" ? (
                 <button
@@ -726,6 +844,15 @@ _${date}_
                   📊 Unit Status
                 </button>
               ))}
+            {/* ALL UNIT STATUS */}
+            {localStorage.getItem("userType") === "division" && (
+              <button
+                className="export-btn"
+                style={{ background: "#105652" }}
+                onClick={allUnitStatus}>
+                📊 All Unit Status
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -739,7 +866,7 @@ _${date}_
           justifyContent: "center",
           padding: "10px",
           background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-          borderRadius: "20px",
+          borderRadius: "10px",
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
@@ -1054,7 +1181,6 @@ _${date}_
         input:focus {
           border-color: #007bff;
         }
-
         .export-btn {
           padding: 10px 16px;
           background: #007bff;
@@ -1074,14 +1200,6 @@ _${date}_
           table-layout: fixed; /* Important for truncation */
         }
 
-        @media (max-width: 768px) {
-          .filter-row {
-            flex-direction: column;
-          }
-          .filter-item {
-            width: 100%;
-          }
-        }
         .records-table-wrapper {
           overflow-x: auto;
         }
