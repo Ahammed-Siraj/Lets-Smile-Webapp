@@ -4,6 +4,7 @@ import { API_BASE_URL } from "../api";
 import { useNavigate } from "react-router-dom";
 import { divisionList, sectorList, unitList } from "../constants/datalist";
 import Swal from "sweetalert2";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 Add this import at the top
 
 export default function LoginPage() {
   const [division, setDivision] = useState("");
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const userType = localStorage.getItem("userType");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -171,18 +173,33 @@ export default function LoginPage() {
           </div>
         )}
 
-        {/* 🔒 Password */}
-        <div className="form-group mb-3">
+      
+        {/* 🔒 Password with Toggle */}
+        <div className="form-group mb-3" style={{ position: "relative" }}>
           <label>
             <strong>Password</strong>
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             className="form-control"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ paddingRight: "35px" }} // space for the icon
           />
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "70%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#0b6b5a",
+              fontSize: "1.1rem",
+            }}>
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
         </div>
 
         {/* 🚀 Submit Button */}

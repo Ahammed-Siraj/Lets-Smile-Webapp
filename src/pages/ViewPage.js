@@ -885,11 +885,12 @@ _${date}_
 
           {/* Buttons */}
           <div
-            className="filter-item"
+            className="filter-card"
             style={{
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
+              background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
               gap: "5px",
             }}>
             {/* ExportPDF Button */}
