@@ -947,7 +947,7 @@ _${date}_
             textAlign: "center",
             fontWeight: "600",
             color: "#0b6b5a",
-            marginBottom: "10px",
+            marginBottom: "3px",
           }}>
           Total Records: {filtered.length}
         </p>
