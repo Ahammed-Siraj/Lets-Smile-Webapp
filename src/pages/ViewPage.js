@@ -757,11 +757,13 @@ _${date}_
             style={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "1rem",
+              gap: "5px",
               background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
               marginBottom: "10px",
+              justifyContent: "space-between",
             }}>
-            <div className="form-group">
+            {/* Sector Filter */}
+            <div className="form-group equal-filter">
               <label>Sector</label>
               {localStorage.getItem("userType") === "division" ? (
                 <select
@@ -779,8 +781,9 @@ _${date}_
                 <input value={sector} readOnly />
               )}
             </div>
+
             {/* Unit Filter */}
-            <div className="filter-item">
+            <div className="form-group equal-filter">
               <label>Unit</label>
               {localStorage.getItem("userType") !== "unit" ? (
                 <select
@@ -796,7 +799,7 @@ _${date}_
             </div>
 
             {/* Name Filter */}
-            <div className="filter-item">
+            <div className="form-group equal-filter">
               <label>Name</label>
               <input
                 type="text"
@@ -820,7 +823,7 @@ _${date}_
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: "10px",
+              gap: "5px",
             }}>
             {/* ExportPDF Button */}
             <button className="export-btn" onClick={exportPDF}>
@@ -1128,10 +1131,10 @@ _${date}_
       <style jsx>{`
         .filter-card {
           background: #f9fafc;
-          padding: 1rem 1.5rem;
+          padding: 1rem 1rem;
           border-radius: 12px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
         }
         .record-details {
           display: flex;
@@ -1150,7 +1153,7 @@ _${date}_
         .filter-row {
           display: flex;
           flex-wrap: wrap;
-          gap: 1rem;
+          gap: 5px
           margin-top: 0.5rem;
         }
 
@@ -1182,7 +1185,7 @@ _${date}_
           border-color: #007bff;
         }
         .export-btn {
-          padding: 10px 16px;
+          padding: 7px 10px;
           background: #007bff;
           color: white;
           border: none;
@@ -1226,7 +1229,32 @@ _${date}_
         .desktop-only {
           display: table-cell;
         }
+          .equal-filter {
+            flex: 1 1 30%;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            }
+
+            .equal-filter label {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #333;
+            }
+
+            .equal-filter select,
+            .equal-filter input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            }
+
         @media (max-width: 768px) {
+          .equal-filter {
+    flex: 1 1 100%;
+  }
           .desktop-only {
             display: none; /* hide extra columns on mobile */
           }
