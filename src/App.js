@@ -7,10 +7,11 @@ import ViewPage from "./pages/ViewPage";
 import AdminPage from "./pages/AdminPage";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div>
+    <div className="app-container">
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -44,6 +45,7 @@ function App() {
 
         <Route path="*" element={<HomePage />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

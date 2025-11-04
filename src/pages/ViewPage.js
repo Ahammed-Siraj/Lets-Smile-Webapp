@@ -792,6 +792,7 @@ _${date}_
         boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
         color: "#333",
         maxWidth: "1000px",
+        width: "100%",
       }}>
       <h2
         style={{
@@ -815,6 +816,7 @@ _${date}_
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
+          width: "100%",
         }}>
         {/* <h4>🔎 Filter Options</h4> */}
 
@@ -828,6 +830,7 @@ _${date}_
               background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
               marginBottom: "10px",
               justifyContent: "space-between",
+              width: "100%",
             }}>
             {/* Sector Filter */}
             <div className="form-group equal-filter">
@@ -940,71 +943,80 @@ _${date}_
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
+          width: "100%",
         }}>
         <p
           style={{
-            textAlign: "right",
+            textAlign: "center",
             fontWeight: "600",
             color: "#0b6b5a",
-            marginBottom: "10px",
+            marginBottom: "2px",
           }}>
           Total Records: {filtered.length}
         </p>
-        <table
-          className="records-table"
-          style={{
-            background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-            borderRadius: "20px",
-            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
-            color: "#333",
-            maxWidth: "1000px",
-          }}>
-          <thead>
-            <tr>
-              <th className="desktop-only">No</th>
-              <th className="desktop-only">Sector</th>
-              <th>Unit</th>
-              <th>Name</th>
-              <th>Age</th>
-              <th>Class</th>
-              <th className="desktop-only">School</th>
-              <th className="desktop-only">Father</th>
-              <th className="desktop-only">Number</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            {filtered
-              .slice(
-                (currentPage - 1) * recordsPerPage,
-                currentPage * recordsPerPage
-              )
-              .map((r, index) => (
-                <tr
-                  key={r._id}
-                  className="table-row"
-                  onClick={() => handleRowClick(r)}
-                  style={{ cursor: "pointer" }}>
-                  <td className="desktop-only">{index + 1}</td>
-                  <td className="desktop-only">{r.sector}</td>
-                  <td>{r.unit}</td>
-                  <td>{r.name}</td>
-                  <td>{r.age}</td>
-                  <td>{r.className}</td>
-                  <td className="desktop-only">{r.school}</td>
-                  <td className="desktop-only">{r.fatherName}</td>
-                  <td className="desktop-only">{r.number}</td>
-                </tr>
-              ))}
-            {filtered.length === 0 && (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}>
+          <table
+            className="records-table"
+            style={{
+              background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
+              borderRadius: "20px",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+              color: "#333",
+              maxWidth: "1000px",
+            }}>
+            <thead>
               <tr>
-                <td colSpan="9" style={{ textAlign: "center" }}>
-                  No records found
-                </td>
+                <th className="desktop-only">No</th>
+                <th className="desktop-only">Sector</th>
+                <th>Unit</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Class</th>
+                <th className="desktop-only">School</th>
+                <th className="desktop-only">Father</th>
+                <th className="desktop-only">Number</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {filtered
+                .slice(
+                  (currentPage - 1) * recordsPerPage,
+                  currentPage * recordsPerPage
+                )
+                .map((r, index) => (
+                  <tr
+                    key={r._id}
+                    className="table-row"
+                    onClick={() => handleRowClick(r)}
+                    style={{ cursor: "pointer" }}>
+                    <td className="desktop-only">{index + 1}</td>
+                    <td className="desktop-only">{r.sector}</td>
+                    <td>{r.unit}</td>
+                    <td>{r.name}</td>
+                    <td>{r.age}</td>
+                    <td>{r.className}</td>
+                    <td className="desktop-only">{r.school}</td>
+                    <td className="desktop-only">{r.fatherName}</td>
+                    <td className="desktop-only">{r.number}</td>
+                  </tr>
+                ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan="9" style={{ textAlign: "center" }}>
+                    No records found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
         <div
           style={{
             display: "flex",

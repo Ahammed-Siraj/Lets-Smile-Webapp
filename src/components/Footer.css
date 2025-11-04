@@ -3,10 +3,10 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
-  color: #0b6b5a;
+  background: linear-gradient(135deg, #acb6e5 0%, #74ebd5 50%, #acb6e5 100%);
+  color: #03332aff;
   text-align: center;
-  padding: 3px 0 2px 0; /* ↓ Reduced top & bottom padding */
+  padding: 10px;
   font-weight: 600;
   font-size: 0.9rem;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
@@ -19,26 +19,36 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5px; /* ↓ Reduced gap between text and icons */
+  line-height: 1.2; /* ↓ tighter line spacing */
+  gap: 1px; /* ↓ reduced vertical gap between text and icons */
+}
+
+.footer p {
+  margin: 0; /* remove default paragraph margins */
 }
 
 .footer-icons {
   display: flex;
-  gap: 8px; /* slightly tighter spacing between icons */
-  font-size: 1rem;
+  gap: 6px; /* ↓ closer icons */
+  font-size: 1.2rem;
+  color: #03332aff;
+  margin-top: 2px; /* ↓ small gap from text */
 }
-
+body {
+  padding-bottom: 80px; /* matches new smaller footer height */
+}
 .footer-icons a {
   color: #0b6b5a;
+
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .footer-icons a:hover {
-  color: #064c3a;
+  color: #03332aff;
   transform: scale(1.1);
 }
 
-/* Adjust body padding so footer doesn’t overlap content */
+/* Adjust bottom padding so footer doesn't overlap content */
 body {
-  padding-bottom: 35px; /* smaller bottom padding to match reduced height */
+  padding-bottom: 32px;
 }

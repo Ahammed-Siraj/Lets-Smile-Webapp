@@ -62,7 +62,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <p>Powered By: MANJESHWAR DIVISION IT TEAM</p>
+        {/* <p>Powered By: MANJESHWAR DIVISION IT TEAM</p> */}
         <p>© 2025 Let's Smile Club — SSF Manjeshwar</p>
         <div className="footer-icons">
           <a
@@ -77,12 +77,6 @@ export default function Footer() {
             rel="noopener noreferrer">
             <FaInstagram />
           </a>
-          {/* <a
-            href="https://ssfmanjeshwar.in"
-            target="_blank"
-            rel="noopener noreferrer">
-            <FaGlobe />
-          </a> */}
         </div>
       </div>
     </footer>
