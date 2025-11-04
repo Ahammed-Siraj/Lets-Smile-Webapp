@@ -84,6 +84,7 @@ export default function EntryPage() {
         boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
         color: "#333",
         maxWidth: "1000px",
+        width: "auto",
       }}>
       <h2
         style={{
