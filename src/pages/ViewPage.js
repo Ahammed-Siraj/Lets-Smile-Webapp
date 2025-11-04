@@ -690,11 +690,12 @@ _${date}_
 🔗 Registration:
 https://smile-manjeshwar.vercel.app
 
-📊 *UNIT STATUS (All Units in Division)*
+📊 *UNIT STATUS*
 ────────────────
 ${messageText}
 
-*Division Status: ${totalMembers} / ${participatedUnits} / ${totalUnits}*
+────────────────
+*📊Division Status: ${totalMembers} / ${participatedUnits} / ${totalUnits}*
 ────────────────
 *Generated On:*
 _${date}_
