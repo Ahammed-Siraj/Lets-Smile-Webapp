@@ -1,0 +1,44 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+  color: #0b6b5a;
+  text-align: center;
+  padding: 3px 0 2px 0; /* ↓ Reduced top & bottom padding */
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5px; /* ↓ Reduced gap between text and icons */
+}
+
+.footer-icons {
+  display: flex;
+  gap: 8px; /* slightly tighter spacing between icons */
+  font-size: 1rem;
+}
+
+.footer-icons a {
+  color: #0b6b5a;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-icons a:hover {
+  color: #064c3a;
+  transform: scale(1.1);
+}
+
+/* Adjust body padding so footer doesn’t overlap content */
+body {
+  padding-bottom: 35px; /* smaller bottom padding to match reduced height */
+}
