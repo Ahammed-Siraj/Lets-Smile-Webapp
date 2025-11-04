@@ -75,14 +75,7 @@ button.secondary {
   background: linear-gradient(90deg, #0b6b5a44, #0b6b5a22);
   color: #0b6b5a;
 }
-html,
-body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden; /* 🚫 Prevent horizontal scrolling */
-  margin: 0;
-  padding: 0px 5px 35px 5px;
-}
+
 @media (max-width: 720px) {
   .container {
     margin: 10px;
