@@ -33,7 +33,7 @@ export const unitList = {
   ],
   KADAMBAR: [
     "ARIMALA",
-    "CM NAGAR",
+    "CM NAGAR M",
     "DARKAS",
     "DURGIPALLA",
     "EDIYA",
