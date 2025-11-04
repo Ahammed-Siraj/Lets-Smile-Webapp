@@ -695,7 +695,8 @@ https://smile-manjeshwar.vercel.app
 ${messageText}
 
 ────────────────
-*📊Division Status: ${totalMembers} / ${participatedUnits} / ${totalUnits}*
+*📊Division Status:*
+   *${totalMembers} / ${participatedUnits} / ${totalUnits}*
 ────────────────
 *Generated On:*
 _${date}_
