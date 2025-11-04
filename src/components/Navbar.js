@@ -45,7 +45,7 @@ export default function Navbar() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "0px 20px",
+          padding: "0px,10px,0pc,10px",
           boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
           zIndex: 1000,
           flexWrap: "wrap",
