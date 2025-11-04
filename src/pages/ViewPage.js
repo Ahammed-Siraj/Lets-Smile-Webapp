@@ -599,92 +599,94 @@ _${date}_
   };
 
   const allUnitStatus = () => {
-  const userType = localStorage.getItem("userType");
-  const division = localStorage.getItem("division");
+    const userType = localStorage.getItem("userType");
+    const division = localStorage.getItem("division");
 
-  if (userType !== "division") return;
+    if (userType !== "division") return;
 
-  const sectorCodes = {
-    "BAKRABAIL": "BKRBL",
-    "DAIGOLI": "DGLI",
-    "KADAMBAR": "KDMBR",
-    "KEDUMBADY": "KED",
-    "KUNJATHUR": "KJR",
-    "MANJESHWARAM": "MJR",
-    "MEENJA": "MNJ",
-    "VORKADY": "VRKD",
-  };
+    const sectorCodes = {
+      BAKRABAIL: "BKRBL",
+      DAIGOLI: "DGLI",
+      KADAMBAR: "KDMBR",
+      KEDUMBADY: "KED",
+      KUNJATHUR: "KJR",
+      MANJESHWARAM: "MJR",
+      MEENJA: "MNJ",
+      VORKADY: "VRKD",
+    };
 
-  // Combine all units
-  const allUnits = Object.entries(unitList).flatMap(([sectorName, units]) =>
-    units.map((unit) => ({
-      sector: sectorName,
-      code:
-        sectorCodes[sectorName.toUpperCase()] ||
-        sectorName.slice(0, 3).toUpperCase(),
-      unit,
-    }))
-  );
+    // Combine all units
+    const allUnits = Object.entries(unitList).flatMap(([sectorName, units]) =>
+      units.map((unit) => ({
+        sector: sectorName,
+        code:
+          sectorCodes[sectorName.toUpperCase()] ||
+          sectorName.slice(0, 3).toUpperCase(),
+        unit,
+      }))
+    );
 
-  // Member count per unit
-  const unitCounts = records.reduce((acc, curr) => {
-    acc[curr.unit] = (acc[curr.unit] || 0) + 1;
-    return acc;
-  }, {});
+    // Member count per unit
+    const unitCounts = records.reduce((acc, curr) => {
+      acc[curr.unit] = (acc[curr.unit] || 0) + 1;
+      return acc;
+    }, {});
 
-  // Group units by sector
-  const sectorGroups = allUnits.reduce((acc, { sector, code, unit }) => {
-    if (!acc[sector]) acc[sector] = { code, units: [] };
-    acc[sector].units.push({
-      unit,
-      count: unitCounts[unit] || 0,
+    // Group units by sector
+    const sectorGroups = allUnits.reduce((acc, { sector, code, unit }) => {
+      if (!acc[sector]) acc[sector] = { code, units: [] };
+      acc[sector].units.push({
+        unit,
+        count: unitCounts[unit] || 0,
+      });
+      return acc;
+    }, {});
+
+    // Sort units (by count)
+    Object.values(sectorGroups).forEach((group) => {
+      group.units.sort((a, b) => b.count - a.count);
     });
-    return acc;
-  }, {});
 
-  // Sort units (by count)
-  Object.values(sectorGroups).forEach((group) => {
-    group.units.sort((a, b) => b.count - a.count);
-  });
+    // Sector totals + sort by total
+    const sortedSectors = Object.entries(sectorGroups)
+      .map(([sector, { code, units }]) => {
+        const total = units.reduce((sum, u) => sum + u.count, 0);
+        const participatedUnits = units.filter((u) => u.count > 0).length;
+        const totalUnits = units.length;
+        return { sector, code, units, total, participatedUnits, totalUnits };
+      })
+      .sort((a, b) => b.total - a.total);
 
-  // Sector totals + sort by total
-  const sortedSectors = Object.entries(sectorGroups)
-    .map(([sector, { code, units }]) => {
-      const total = units.reduce((sum, u) => sum + u.count, 0);
-      const participatedUnits = units.filter((u) => u.count > 0).length;
-      const totalUnits = units.length;
-      return { sector, code, units, total, participatedUnits, totalUnits };
-    })
-    .sort((a, b) => b.total - a.total);
+    // Totals (overall)
+    const totalUnits = allUnits.length;
+    const participatedUnits = allUnits.filter(
+      (u) => unitCounts[u.unit] > 0
+    ).length;
+    const totalMembers = Object.values(unitCounts).reduce((a, b) => a + b, 0);
 
-  // Totals (overall)
-  const totalUnits = allUnits.length;
-  const participatedUnits = allUnits.filter((u) => unitCounts[u.unit] > 0).length;
-  const totalMembers = Object.values(unitCounts).reduce((a, b) => a + b, 0);
+    // Date
+    const date = new Date()
+      .toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .replaceAll("/", "-");
 
-  // Date
-  const date = new Date()
-    .toLocaleString("en-IN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    })
-    .replaceAll("/", "-");
+    // WhatsApp message
+    const messageText = sortedSectors
+      .map(({ sector, code, units, total, participatedUnits, totalUnits }) => {
+        const unitLines = units
+          .map(({ unit, count }) => `   • ${unit}: *${count}*`)
+          .join("\n");
+        return `*${code} - ${sector.toUpperCase()}*\n${unitLines}\n➡️ *Status: ${total}/${participatedUnits}/${totalUnits}*`;
+      })
+      .join("\n\n");
 
-  // WhatsApp message
-  const messageText = sortedSectors
-    .map(({ sector, code, units, total, participatedUnits, totalUnits }) => {
-      const unitLines = units
-        .map(({ unit, count }) => `   • ${unit}: *${count}*`)
-        .join("\n");
-      return `*${code} - ${sector.toUpperCase()}*\n${unitLines}\n➡️ *Total:* ${total}/${participatedUnits}/${totalUnits}`;
-    })
-    .join("\n\n");
-
-  const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
+    const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
 🔗 Registration:
 https://smile-manjeshwar.vercel.app
 
@@ -692,7 +694,7 @@ https://smile-manjeshwar.vercel.app
 ────────────────
 ${messageText}
 
-*Grand Total:* ${totalMembers}/${participatedUnits}/${totalUnits}
+*Division Status: ${totalMembers} / ${participatedUnits} / ${totalUnits}*
 ────────────────
 *Generated On:*
 _${date}_
@@ -700,12 +702,12 @@ _${date}_
 *SSF ${division || "Division"}*
 © Let's Smile Club`;
 
-  const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
-  // SweetAlert content
-  const messageHTML = sortedSectors
-    .map(({ sector, code, units, total, participatedUnits, totalUnits }) => {
-      return `
+    // SweetAlert content
+    const messageHTML = sortedSectors
+      .map(({ sector, code, units, total, participatedUnits, totalUnits }) => {
+        return `
       <div style="margin-bottom: 14px;">
         <h4 style="
           color: #0b6b5a;
@@ -747,12 +749,12 @@ _${date}_
         ">➡️ Total: ${total}/${participatedUnits}/${totalUnits}</div>
       </div>
     `;
-    })
-    .join("");
+      })
+      .join("");
 
-  Swal.fire({
-    title: `📊 All Unit Status (${division || "Division"})`,
-    html: `
+    Swal.fire({
+      title: `📊 All Unit Status (${division || "Division"})`,
+      html: `
       <div style="max-height: 70vh; overflow-y: auto;">${messageHTML}</div>
       <br>
       <a href="${whatsappLink}" target="_blank"
@@ -768,14 +770,13 @@ _${date}_
         📲 Share on WhatsApp
       </a>
     `,
-    icon: "info",
-    width: "600px",
-    confirmButtonText: "Close",
-    confirmButtonColor: "#0b6b5a",
-    background: "#f8fdfd",
-  });
-};
-
+      icon: "info",
+      width: "600px",
+      confirmButtonText: "Close",
+      confirmButtonColor: "#0b6b5a",
+      background: "#f8fdfd",
+    });
+  };
 
   return (
     <div
