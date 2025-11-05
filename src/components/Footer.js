@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-content">
         {/* <p>Powered By: MANJESHWAR DIVISION IT TEAM</p> */}
-        <p>© 2025 Let's Smile Club — SSF Manjeshwar</p>
+        <p>© 2025 Let's Smile — SSF Manjeshwar</p>
         <div className="footer-icons">
           <a
             href="https://wa.me/919567323471"

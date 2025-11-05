@@ -438,7 +438,7 @@ Total: *${grandTotalMembers}/${grandParticipatedUnits}*/${grandTotalUnits}
 _${date}_
 ────────────────
 *SSF ${division || "All Divisions"}* Division
-© Let's Smile Club`;
+© Let's Smile Directorate`;
 
       const whatsappLink = `https://wa.me/?text=${encodeURIComponent(
         shareText
@@ -542,7 +542,7 @@ ${messageText}
 _${date}_
 ────────────────
 *SSF ${sector || "All Sectors"}* Sector
-© Let's Smile Club`;
+© Let's Smile Directorate`;
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
@@ -702,7 +702,7 @@ ${messageText}
 _${date}_
 ────────────────
 *SSF ${division || "Division"}*
-© Let's Smile Club`;
+© Let's Smile Directorate`;
 
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
@@ -950,7 +950,7 @@ _${date}_
             color: "#0b6b5a",
             marginBottom: "3px",
           }}>
-          Total Records: {filtered.length}
+          Records: {filtered.length}
         </p>
         <table
           className="records-table"
