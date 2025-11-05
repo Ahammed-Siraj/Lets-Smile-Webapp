@@ -41,7 +41,6 @@ body {
 }
 .footer-icons a {
   color: #0b6b5a;
-
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
@@ -57,9 +56,9 @@ body {
 
 /* Highlighted SSF text */
 .ssf-text {
-  font-family: "Cooper Black", "Archivo Black", "Arial Black", serif;
-  font-weight: 900;
-  font-size: 1.05em; /* slightly larger */
+  font-family: "Cooper Black"; /*, "Archivo Black", "Arial Black", serif;*/
+  /* font-weight: 700; */
+  /* font-size: 1.01em; /* slightly larger */
   color: #03332aff;
   letter-spacing: 0.5px;
   /* text-shadow: 0 0 6px rgba(3, 51, 42, 1), 0 0 12px rgba(3, 51, 42, 1.4); */
