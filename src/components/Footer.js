@@ -7,7 +7,6 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-content">
         {/* <p>Powered By: MANJESHWAR DIVISION IT TEAM</p> */}
-        <p>© 2025 Let's Smile — SSF Manjeshwar</p>
         <div className="footer-icons">
           <a
             href="https://wa.me/919567323471"
@@ -22,6 +21,10 @@ export default function Footer() {
             <FaInstagram />
           </a>
         </div>
+        <p>
+          © 2025 Let's Smile — <span className="ssf-text">SSF</span> Manjeshwar
+        </p>
+        <p>💻 Powered by Manjeshwar IT Team</p>
       </div>
     </footer>
   );
