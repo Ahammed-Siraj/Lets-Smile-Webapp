@@ -818,7 +818,6 @@ _${date}_
           maxWidth: "1000px",
         }}>
         {/* <h4>🔎 Filter Options</h4> */}
-
         <div className="filter-row">
           <div
             className="filter-card"
@@ -1326,6 +1325,7 @@ _${date}_
         @media (max-width: 768px) {
           .equal-filter {
     flex: 1 1 100%;
+    margin-bottom: 2px;
   }
           .desktop-only {
             display: none; /* hide extra columns on mobile */
