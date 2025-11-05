@@ -1081,7 +1081,8 @@ _${date}_
         onHide={() => setSelectedRecord(null)}
         centered
         size="2sm"
-        backdrop="static">
+        backdrop={true} // ✅ allows outside click to close
+        keyboard={true}>
         {/* HEADER */}
         <Modal.Header
           className="d-flex justify-content-center"

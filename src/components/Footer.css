@@ -59,7 +59,7 @@ body {
 .ssf-text {
   font-family: "Cooper Black"; /*, "Archivo Black", "Arial Black", serif;*/
   /* font-weight: 700; */
-  /* font-size: 1.01em; /* slightly larger */
+  font-size: 1; /* slightly larger */
   color: #03332aff;
   letter-spacing: 0.5px;
   /* text-shadow: 0 0 6px rgba(3, 51, 42, 1), 0 0 12px rgba(3, 51, 42, 1.4); */
