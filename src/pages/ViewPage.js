@@ -967,7 +967,7 @@ _${date}_
               <th className="desktop-only">Sector</th>
               <th>Unit</th>
               <th>Name</th>
-              <th>Age</th>
+              <th className="desktop-only">Age</th>
               <th>Class</th>
               <th className="desktop-only">School</th>
               <th className="desktop-only">Father</th>
@@ -991,7 +991,7 @@ _${date}_
                   <td className="desktop-only">{r.sector}</td>
                   <td>{r.unit}</td>
                   <td>{r.name}</td>
-                  <td>{r.age}</td>
+                  <td className="desktop-only">{r.age}</td>
                   <td>{r.className}</td>
                   <td className="desktop-only">{r.school}</td>
                   <td className="desktop-only">{r.fatherName}</td>

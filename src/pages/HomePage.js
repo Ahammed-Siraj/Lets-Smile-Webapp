@@ -98,14 +98,14 @@ export default function HomePage() {
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: "12px",
+              gap: "10px",
             }}>
             {/* style={{ display: "none" }} */}
             <Link to="/login">
               <button
                 style={{
                   borderRadius: "8px",
-                  padding: "10px 20px",
+                  padding: "8px 15px",
                   fontSize: "1rem",
                   border: "none",
                   background: "#0b6b5a",
@@ -125,7 +125,7 @@ export default function HomePage() {
               <button
                 style={{
                   borderRadius: "8px",
-                  padding: "10px 20px",
+                  padding: "8px 15px",
                   fontSize: "1rem",
                   border: "none",
                   background: "#0b6b5a",
@@ -145,7 +145,7 @@ export default function HomePage() {
               <button
                 style={{
                   borderRadius: "8px",
-                  padding: "10px 20px",
+                  padding: "8px 15px",
                   fontSize: "1rem",
                   border: "none",
                   background: "#0b6b5a",
