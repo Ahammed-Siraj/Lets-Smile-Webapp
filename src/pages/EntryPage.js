@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE_URL, authHeader } from "../api";
 import { unitList } from "../constants/datalist";
+import Swal from "sweetalert2";
 
 export default function EntryPage() {
   const [sector, setSector] = useState("");
@@ -66,7 +67,8 @@ export default function EntryPage() {
       setEditingId(null);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Error");
+      Swal.fire("error!", err.response?.data?.message, "Error");
+      // alert(err.response?.data?.message || "Error");
     } finally {
       setIsSubmitting(false);
     }
@@ -256,32 +258,19 @@ export default function EntryPage() {
             justifyContent: "center",
             marginTop: "10px",
           }}>
-          {/* <button
+          <button
             type="submit"
+            disabled={isSubmitting}
             style={{
               borderRadius: "8px", // ✅ Correct property
               padding: "10px 20px",
+              cursor: isSubmitting ? "not-allowed" : "pointer",
+              backgroundColor: isSubmitting ? "#999" : "#007bff",
               color: "#fff",
               border: "none",
               cursor: "pointer",
               fontSize: "16px",
               fontWeight: "600",
-            }}>
-            {isSubmitting ? "Please wait..." : editingId ? "UPDATE" : "SUBMIT"}
-          </button> */}
-          <button
-            type="submit"
-            disabled={isSubmitting} // ✅ Disable button while submitting
-            style={{
-              borderRadius: "8px",
-              padding: "10px 20px",
-              color: "#fff",
-              border: "none",
-              cursor: isSubmitting ? "not-allowed" : "pointer", // ✅ Change cursor
-              fontSize: "16px",
-              fontWeight: "600",
-              backgroundColor: isSubmitting ? "#999" : "#007bff", // ✅ Change color when disabled
-              opacity: isSubmitting ? 0.7 : 1,
             }}>
             {isSubmitting ? "Please wait..." : editingId ? "UPDATE" : "SUBMIT"}
           </button>

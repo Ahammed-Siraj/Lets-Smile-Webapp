@@ -942,7 +942,6 @@ _${date}_
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
-          width: "auto",
         }}>
         <p
           style={{
@@ -960,7 +959,7 @@ _${date}_
             borderRadius: "10px",
             boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
             color: "#333",
-            maxWidth: "950px",
+            maxWidth: "1000px",
           }}>
           <thead>
             <tr>
