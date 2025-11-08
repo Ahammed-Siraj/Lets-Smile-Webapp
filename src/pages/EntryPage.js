@@ -256,7 +256,7 @@ export default function EntryPage() {
             justifyContent: "center",
             marginTop: "10px",
           }}>
-          <button
+          {/* <button
             type="submit"
             style={{
               borderRadius: "8px", // ✅ Correct property
@@ -266,6 +266,22 @@ export default function EntryPage() {
               cursor: "pointer",
               fontSize: "16px",
               fontWeight: "600",
+            }}>
+            {isSubmitting ? "Please wait..." : editingId ? "UPDATE" : "SUBMIT"}
+          </button> */}
+          <button
+            type="submit"
+            disabled={isSubmitting} // ✅ Disable button while submitting
+            style={{
+              borderRadius: "8px",
+              padding: "10px 20px",
+              color: "#fff",
+              border: "none",
+              cursor: isSubmitting ? "not-allowed" : "pointer", // ✅ Change cursor
+              fontSize: "16px",
+              fontWeight: "600",
+              backgroundColor: isSubmitting ? "#999" : "#007bff", // ✅ Change color when disabled
+              opacity: isSubmitting ? 0.7 : 1,
             }}>
             {isSubmitting ? "Please wait..." : editingId ? "UPDATE" : "SUBMIT"}
           </button>
