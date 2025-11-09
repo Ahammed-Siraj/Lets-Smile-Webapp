@@ -77,6 +77,7 @@ export const unitList = {
     "AKKARA",
     "BEJJA",
     "CHECKPOST",
+    "CHOUKI",
     "GUDDAGERI",
     "HOSANGADI",
     "MAJIBAIL",
