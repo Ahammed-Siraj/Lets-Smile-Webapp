@@ -1249,7 +1249,11 @@ _${date}_
           background: white;
           transition: border-color 0.2s;
         }
-
+  
+       .records-table thead th {
+          background: #0b6b5a;
+          color: white; /* optional for visibility */
+        }
         select:focus,
         input:focus {
           border-color: #007bff;
@@ -1323,9 +1327,9 @@ _${date}_
 
         @media (max-width: 768px) {
           .equal-filter {
-    flex: 1 1 100%;
-    margin-bottom: 2px;
-  }
+          flex: 1 1 100%;
+           margin-bottom: 2px;
+         }
           .desktop-only {
             display: none; /* hide extra columns on mobile */
           }
