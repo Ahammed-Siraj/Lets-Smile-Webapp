@@ -3,12 +3,12 @@
   "name": "Let's Smile",
   "icons": [
     {
-      "src": ".smileclublogo.png",
+      "src": "smileclublogo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": ".smileclublogo.png",
+      "src": "smileclublogo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
