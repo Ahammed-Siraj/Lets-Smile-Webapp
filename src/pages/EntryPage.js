@@ -160,6 +160,7 @@ export default function EntryPage() {
           </label>
           <input
             name="name"
+            placeholder="Enter Name"
             value={formData.name}
             required
             onChange={(e) => {
@@ -174,6 +175,7 @@ export default function EntryPage() {
           </label>
           <input
             name="school"
+             placeholder="Enter School Name"
             value={formData.school}
             onChange={handleChange}
             required
@@ -228,6 +230,7 @@ export default function EntryPage() {
           <input
             name="fatherName"
             value={formData.fatherName}
+            placeholder="Enter Father Name"
             onChange={(e) => {
               const lettersOnly = e.target.value.replace(/[^a-zA-Z\s]/g, "");
               setFormData((prev) => ({ ...prev, fatherName: lettersOnly }));
@@ -237,7 +240,7 @@ export default function EntryPage() {
         </div>
         <div className="form-group">
           <label>
-            <strong>Number</strong>
+            <strong>Contact</strong>
           </label>
           <input
             name="number"
