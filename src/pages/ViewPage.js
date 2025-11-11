@@ -948,6 +948,7 @@ _${date}_
             textAlign: "center",
             fontWeight: "600",
             color: "#0b6b5a",
+            marginBottom: "5px",
           }}>
           Records: {filtered.length}
         </p>
@@ -956,7 +957,6 @@ _${date}_
         <div
           className="records-table"
           style={{
-            maxHeight: "400px", // 👈 Adjust height as needed
             overflowY: "auto", // Only vertical scroll inside table
             overflowX: "auto", // Allow horizontal scroll if many columns
             borderRadius: "10px",
