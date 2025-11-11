@@ -942,7 +942,6 @@ _${date}_
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
-          overflow: "hidden",
         }}>
         <p
           style={{
@@ -1276,12 +1275,16 @@ _${date}_
           width: 100%;
           border-collapse: collapse;
           table-layout: fixed; /* Important for truncation */
-           overflow: hidden; 
+           overflow: auto; 
         }
 
         .records-table-wrapper {
-          overflow-x: auto;
+          overflow: auto;
         }
+        .records-table-wrapper::-webkit-scrollbar {
+          display: none; /* Chrome, Safari */
+        }
+
         .records-table {
           width: 100%;
           border-collapse: collapse;
