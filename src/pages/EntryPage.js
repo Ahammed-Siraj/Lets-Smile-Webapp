@@ -92,7 +92,7 @@ export default function EntryPage() {
         style={{
           fontSize: "1.5rem",
           fontWeight: "500",
-          marginBottom: "20px",
+          marginBottom: "10px",
           color: "#0b6b5a",
         }}>
         📝 Let’s Get Started
@@ -103,7 +103,7 @@ export default function EntryPage() {
         style={{
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
+          background: "linear-gradient(135deg, #ACB6E5 0%, #74ebd5 100%)",
           padding: "20px 20px",
           borderRadius: "10px",
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
@@ -125,7 +125,7 @@ export default function EntryPage() {
                 setSector(e.target.value);
                 setUnit("");
               }}>
-              <option value="">All Sectors</option>
+              <option value="">Select Sector</option>
               {Object.keys(unitList).map((sec) => (
                 <option key={sec}>{sec}</option>
               ))}
@@ -175,7 +175,7 @@ export default function EntryPage() {
           </label>
           <input
             name="school"
-             placeholder="Enter School Name"
+            placeholder="Enter School Name"
             value={formData.school}
             onChange={handleChange}
             required

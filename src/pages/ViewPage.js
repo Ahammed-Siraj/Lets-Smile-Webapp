@@ -890,7 +890,7 @@ _${date}_
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
+              background: "linear-gradient(135deg, #ACB6E5 0%, #74ebd5 100%)",
               gap: "5px",
             }}>
             {/* ExportPDF Button */}
@@ -1136,6 +1136,7 @@ _${date}_
                     }}
                   />
                 ) : (
+                  
                   <span className="value ms-1">{formData[field.name]}</span>
                 )}
               </div>
@@ -1201,10 +1202,10 @@ _${date}_
       <style jsx>{`
         .filter-card {
           background: #f9fafc;
-          padding: 1rem 1rem;
+          padding: 10px;
           border-radius: 12px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          margin-bottom: 1rem;
+          margin-bottom: 10px;
         }
         .record-details {
           display: flex;
@@ -1216,7 +1217,7 @@ _${date}_
           justify-content: space-between;
           background: #f8f9fa;
           border-radius: 8px;
-          padding: 10px 14px;
+          padding: 10px 10px;
           font-size: 15px;
           flex-wrap: wrap;
         }
@@ -1239,13 +1240,13 @@ _${date}_
           margin-bottom: 4px;
         }
 
-        select,
+       .filter-card  select
         input {
           padding: 8px 10px;
           border: 1px solid #ccc;
           border-radius: 8px;
           outline: none;
-          font-size: 14px;
+          font-size: 12px;
           background: white;
           transition: border-color 0.2s;
         }
