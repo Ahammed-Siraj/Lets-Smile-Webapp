@@ -1136,7 +1136,6 @@ _${date}_
                     }}
                   />
                 ) : (
-                  
                   <span className="value ms-1">{formData[field.name]}</span>
                 )}
               </div>
@@ -1276,6 +1275,7 @@ _${date}_
           width: 100%;
           border-collapse: collapse;
           table-layout: fixed; /* Important for truncation */
+           overflow: hidden; 
         }
 
         .records-table-wrapper {
@@ -1288,7 +1288,7 @@ _${date}_
         }
         .records-table th,
         .records-table td {
-          padding: 8px 10px;
+          padding: 4px 6px;
           border: 1px solid #ddd;
           text-align: left;
           white-space: nowrap;
@@ -1296,11 +1296,8 @@ _${date}_
           text-overflow: ellipsis;
           white-space: nowrap; /* Keeps text in a single line */
           max-width: 150px; /* Adjust for different screen sizes if needed */
-        }
-        .records-table th {
-          color: #000; /* black text */
-          font-weight: 700; /* bold */
-        }
+        }       
+          
         .desktop-only {
           display: table-cell;
         }
@@ -1341,11 +1338,6 @@ _${date}_
           }
           .filter-row {
             flex-direction: column;
-          }
-          .records-table th,
-          .records-table td {
-            font-size: 13px;
-            padding: 6px;
           }
         }
       `}</style>
