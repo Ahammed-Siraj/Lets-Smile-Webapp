@@ -811,7 +811,7 @@ _${date}_
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
+          background: "linear-gradient(135deg, #ACB6E5 0%,  #74ebd5 100%)",
           borderRadius: "10px",
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
@@ -890,7 +890,7 @@ _${date}_
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              background: "linear-gradient(135deg, #ACB6E5 0%, #74ebd5 100%)",
+              background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
               gap: "5px",
             }}>
             {/* ExportPDF Button */}
@@ -937,18 +937,18 @@ _${date}_
           justifyContent: "center",
           alignItems: "center",
           padding: "10px",
-          background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
+          background: "linear-gradient(135deg, #ACB6E5 0%,  #74ebd5 100%)",
           borderRadius: "10px",
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
+          overflow: "hidden",
         }}>
         <p
           style={{
             textAlign: "center",
             fontWeight: "600",
             color: "#0b6b5a",
-            marginBottom: "3px",
           }}>
           Records: {filtered.length}
         </p>
@@ -960,6 +960,7 @@ _${date}_
             boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
             color: "#333",
             maxWidth: "1000px",
+            margin: "2px",
           }}>
           <thead>
             <tr>
