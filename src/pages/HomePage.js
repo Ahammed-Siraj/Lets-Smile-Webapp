@@ -8,12 +8,12 @@ export default function HomePage() {
   const isLogedIn = JSON.parse(localStorage.getItem("isLogedIn"));
 
   if (isLogedIn) {
-    Swal.fire({
-      icon: "warning",
-      title: "Warning",
-      text: "Logout to go home?",
-      confirmButtonText: "Okay",
-    });
+    // Swal.fire({
+    //   icon: "warning",
+    //   title: "Warning",
+    //   text: "Logout to go home?",
+    //   confirmButtonText: "Okay",
+    // });
     return <Navigate to="/entry" />;
   }
 
