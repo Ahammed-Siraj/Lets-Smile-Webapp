@@ -929,173 +929,164 @@ _${date}_
       </div>
 
       {/* 📊 Records Table */}
-     <div
-  className="records-table-wrapper"
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "10px",
-    background: "linear-gradient(135deg, #ACB6E5 0%, #74ebd5 100%)",
-    borderRadius: "10px",
-    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
-    color: "#333",
-    maxWidth: "1000px",
-  }}
->
-  <p
-    style={{
-      textAlign: "center",
-      fontWeight: "600",
-      color: "#0b6b5a",
-    }}
-  >
-    Records: {filtered.length}
-  </p>
+      <div
+        className="records-table-wrapper"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "10px",
+          background: "linear-gradient(135deg, #ACB6E5 0%, #74ebd5 100%)",
+          borderRadius: "10px",
+          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+          color: "#333",
+          maxWidth: "1000px",
+        }}>
+        <p
+          style={{
+            textAlign: "center",
+            fontWeight: "600",
+            color: "#0b6b5a",
+          }}>
+          Records: {filtered.length}
+        </p>
 
-  {/* ✅ Scrollable table container */}
-  <div
-    style={{
-      maxHeight: "400px", // 👈 Adjust height as needed
-      overflowY: "auto", // Only vertical scroll inside table
-      overflowX: "auto", // Allow horizontal scroll if many columns
-      borderRadius: "10px",
-      width: "100%",
-    }}
-  >
-    <table
-      className="records-table"
-      style={{
-        background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-        borderRadius: "10px",
-        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
-        color: "#333",
-        width: "100%",
-        margin: "2px 0",
-      }}
-    >
-      <thead>
-        <tr>
-          <th className="desktop-only">No</th>
-          <th className="desktop-only">Sector</th>
-          <th>Unit</th>
-          <th>Name</th>
-          <th className="desktop-only">Age</th>
-          <th>Class</th>
-          <th className="desktop-only">School</th>
-          <th className="desktop-only">Father</th>
-          <th className="desktop-only">Number</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {filtered
-          .slice(
-            (currentPage - 1) * recordsPerPage,
-            currentPage * recordsPerPage
-          )
-          .map((r, index) => (
-            <tr
-              key={r._id}
-              className="table-row"
-              onClick={() => handleRowClick(r)}
-              style={{ cursor: "pointer" }}
-            >
-              <td className="desktop-only">{index + 1}</td>
-              <td className="desktop-only">{r.sector}</td>
-              <td>{r.unit}</td>
-              <td>{r.name}</td>
-              <td className="desktop-only">{r.age}</td>
-              <td>{r.className}</td>
-              <td className="desktop-only">{r.school}</td>
-              <td className="desktop-only">{r.fatherName}</td>
-              <td className="desktop-only">{r.number}</td>
-            </tr>
-          ))}
-        {filtered.length === 0 && (
-          <tr>
-            <td colSpan="9" style={{ textAlign: "center" }}>
-              No records found
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-
-  {/* ✅ Pagination stays fixed */}
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: "15px",
-      gap: "8px",
-    }}
-  >
-    <button
-      className="export-btn"
-      style={{
-        background: "#0b6b5a",
-        padding: "6px 12px",
-        borderRadius: "8px",
-      }}
-      disabled={currentPage === 1}
-      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-    >
-      ◀
-    </button>
-
-    {(() => {
-      const visiblePages = 5;
-      let start = Math.max(currentPage - Math.floor(visiblePages / 2), 1);
-      let end = start + visiblePages - 1;
-
-      if (end > totalPages) {
-        end = totalPages;
-        start = Math.max(end - visiblePages + 1, 1);
-      }
-
-      return [...Array(end - start + 1)].map((_, i) => {
-        const page = start + i;
-        return (
-          <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
+        {/* ✅ Scrollable table container */}
+        <div
+          className="records-table"
+          style={{
+            maxHeight: "400px", // 👈 Adjust height as needed
+            overflowY: "auto", // Only vertical scroll inside table
+            overflowX: "auto", // Allow horizontal scroll if many columns
+            borderRadius: "10px",
+            width: "100%",
+          }}>
+          <table
+            className="records-table"
             style={{
-              background: currentPage === page ? "#007bff" : "#74ebd5",
-              color: currentPage === page ? "white" : "#0b6b5a",
-              border: "none",
+              background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
+              borderRadius: "10px",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+              color: "#333",
+              width: "100%",
+              margin: "2px 0",
+            }}>
+            <thead>
+              <tr>
+                <th className="desktop-only">No</th>
+                <th className="desktop-only">Sector</th>
+                <th>Unit</th>
+                <th>Name</th>
+                <th className="desktop-only">Age</th>
+                <th>Class</th>
+                <th className="desktop-only">School</th>
+                <th className="desktop-only">Father</th>
+                <th className="desktop-only">Number</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {filtered
+                .slice(
+                  (currentPage - 1) * recordsPerPage,
+                  currentPage * recordsPerPage
+                )
+                .map((r, index) => (
+                  <tr
+                    key={r._id}
+                    className="table-row"
+                    onClick={() => handleRowClick(r)}
+                    style={{ cursor: "pointer" }}>
+                    <td className="desktop-only">{index + 1}</td>
+                    <td className="desktop-only">{r.sector}</td>
+                    <td>{r.unit}</td>
+                    <td>{r.name}</td>
+                    <td className="desktop-only">{r.age}</td>
+                    <td>{r.className}</td>
+                    <td className="desktop-only">{r.school}</td>
+                    <td className="desktop-only">{r.fatherName}</td>
+                    <td className="desktop-only">{r.number}</td>
+                  </tr>
+                ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan="9" style={{ textAlign: "center" }}>
+                    No records found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* ✅ Pagination stays fixed */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "15px",
+            gap: "8px",
+          }}>
+          <button
+            className="export-btn"
+            style={{
+              background: "#0b6b5a",
+              padding: "6px 12px",
               borderRadius: "8px",
-              padding: "6px 10px",
-              fontWeight: "600",
-              cursor: "pointer",
             }}
-          >
-            {page}
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+            ◀
           </button>
-        );
-      });
-    })()}
 
-    <button
-      className="export-btn"
-      style={{
-        background: "#0b6b5a",
-        padding: "6px 12px",
-        borderRadius: "8px",
-      }}
-      disabled={currentPage === totalPages}
-      onClick={() =>
-        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-      }
-    >
-      ▶
-    </button>
-  </div>
-</div>
+          {(() => {
+            const visiblePages = 5;
+            let start = Math.max(currentPage - Math.floor(visiblePages / 2), 1);
+            let end = start + visiblePages - 1;
 
+            if (end > totalPages) {
+              end = totalPages;
+              start = Math.max(end - visiblePages + 1, 1);
+            }
+
+            return [...Array(end - start + 1)].map((_, i) => {
+              const page = start + i;
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  style={{
+                    background: currentPage === page ? "#007bff" : "#74ebd5",
+                    color: currentPage === page ? "white" : "#0b6b5a",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "6px 10px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}>
+                  {page}
+                </button>
+              );
+            });
+          })()}
+
+          <button
+            className="export-btn"
+            style={{
+              background: "#0b6b5a",
+              padding: "6px 12px",
+              borderRadius: "8px",
+            }}
+            disabled={currentPage === totalPages}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }>
+            ▶
+          </button>
+        </div>
+      </div>
 
       {/* MODAL */}
       <Modal
