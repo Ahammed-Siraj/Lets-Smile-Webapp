@@ -417,11 +417,19 @@ export default function ViewPage() {
       );
 
       // 🟢 WhatsApp message for Division
+      // const messageText = sortedSectors
+      //   .map(
+      //     ({ sector, totalMembers, participatedUnits, totalUnits }) =>
+      //       `*⏺* ${sector} ---: *${totalMembers}/${participatedUnits}*/${totalUnits}`
+      //   )
+      //   .join("\n");
       const messageText = sortedSectors
-        .map(
-          ({ sector, totalMembers, participatedUnits, totalUnits }) =>
-            `*⏺* ${sector} ---: *${totalMembers}/${participatedUnits}*/${totalUnits}`
-        )
+        .map(({ sector, totalMembers, participatedUnits, totalUnits }) => {
+          const emoji =
+            totalMembers >= 100 ? "🟡" : totalMembers >= 50 ? "🟠" : "🔴";
+
+          return `*${emoji}* ${sector} ---: *${totalMembers}/${participatedUnits}*/${totalUnits}`;
+        })
         .join("\n");
 
       const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
@@ -532,7 +540,10 @@ _${date}_
     const totalMembers = sortedUnits.reduce((sum, u) => sum + u.count, 0);
 
     const messageText = sortedUnits
-      .map(({ unit, count }) => `*⏺* ${unit} ---: *${count}*`)
+      .map(({ unit, count }) => {
+        const emoji = count >= 100 ? "🟡" : count >= 50 ? "🟠" : "🔴";
+        return `${emoji} ${unit} ---: *${count}*`;
+      })
       .join("\n");
 
     const shareText = `\`\`\`📃 SMILE Friends List ⭐\`\`\`
@@ -556,7 +567,7 @@ _${date}_
     const messageHTML = `
     <p style="
       color: #0b6b5a;
-      font-weight: bold;
+      font-weight:bold;
     ">
       Total: ${totalMembers}/${participatedUnits}/${totalUnits}
     </p>
