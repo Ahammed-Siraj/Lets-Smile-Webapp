@@ -541,7 +541,7 @@ _${date}_
 
     const messageText = sortedUnits
       .map(({ unit, count }) => {
-        const emoji = count >= 100 ? "🟡" : count >= 50 ? "🟠" : "🔴";
+        const emoji = count >= 50 ? "🟡" : count >= 25 ? "🟠" : "🔴";
         return `${emoji} ${unit} ---: *${count}*`;
       })
       .join("\n");
