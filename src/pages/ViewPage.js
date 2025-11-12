@@ -472,7 +472,7 @@ _${date}_
             ">
               <div style="font-size: 0.8em; font-weight: bold;">${sector}</div>
               <div style="font-size: 1em; font-weight: bold;">${totalMembers}</div>
-              <div style="font-size: 0.9em;">${participatedUnits}/${totalUnits}</div>
+              <div style="font-size: 1em; font-weight: semiBold;">${participatedUnits}/${totalUnits}</div>
             </div>
           `
           )
