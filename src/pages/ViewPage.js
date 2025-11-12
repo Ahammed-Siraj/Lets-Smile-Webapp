@@ -450,7 +450,6 @@ _${date}_
       <p style="
         color: #0b6b5a;
         font-weight: bold;
-
       ">
         Total: ${grandTotalMembers}/${grandParticipatedUnits}/${grandTotalUnits}
       </p>
@@ -470,10 +469,9 @@ _${date}_
               border-radius: 5px;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
               color: #0b6b5a;
-              font-weight: 500;
             ">
-              <div style="font-size: 1em; font-weight: bold;">${sector}</div>
-              <div style="font-size: 1.2em; font-weight: bold;">${totalMembers}</div>
+              <div style="font-size: 0.8em; font-weight: bold;">${sector}</div>
+              <div style="font-size: 1em; font-weight: bold;">${totalMembers}</div>
               <div style="font-size: 0.9em;">${participatedUnits}/${totalUnits}</div>
             </div>
           `
@@ -581,10 +579,9 @@ _${date}_
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             color: #0b6b5a;
-            font-weight: semibold;
           ">
-            <div style="font-size: 1em; font-weight: bold;">${unit}</div>
-            <div style="font-size: 1.2em; font-weight: bold;">${count}</div>
+            <div style="font-size: 0.8em; font-weight: bold;">${unit}</div>
+            <div style="font-size: 1em; font-weight: bold;">${count}</div>
           </div>
         `
         )
