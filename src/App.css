@@ -88,12 +88,13 @@ button.secondary {
 
 .swal2-title {
   margin-top: 0px !important; /* tighter space below icon */
-  font-size: 18px !important; /* optional: smaller title */
+  font-size: 14px !important; /* optional: smaller title */
   font-weight: 600; /* keeps it readable */
 }
 
 /* Optional: shrink popup a little for cleaner view */
 .swal2-popup {
+  padding: 5px;
   border-radius: 10px !important;
 }
 
