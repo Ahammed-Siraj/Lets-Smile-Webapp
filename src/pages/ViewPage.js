@@ -446,6 +446,13 @@ _${date}_
 
       // 🟢 SweetAlert layout
       const messageHTML = `
+      <p style="
+        color: #0b6b5a;
+        font-weight: bold;
+
+      ">
+        Total: ${grandTotalMembers}/${grandParticipatedUnits}/${grandTotalUnits}
+      </p>
       <div style="
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -547,6 +554,12 @@ _${date}_
     const whatsappLink = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
     const messageHTML = `
+    <p style="
+      color: #0b6b5a;
+      font-weight: bold;
+    ">
+      Total: ${totalMembers}/${participatedUnits}/${totalUnits}
+    </p>
     <div style="
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -554,6 +567,7 @@ _${date}_
       text-align: center;
       margin-top: 8px;
     ">
+    
       ${sortedUnits
         .map(
           ({ unit, count }) => `
@@ -948,7 +962,7 @@ _${date}_
             textAlign: "center",
             fontWeight: "600",
             color: "#0b6b5a",
-            marginBottom: "5px",
+            marginBottom: "0px",
           }}>
           Records: {filtered.length}
         </p>
