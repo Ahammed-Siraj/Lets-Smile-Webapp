@@ -416,13 +416,6 @@ export default function ViewPage() {
         0
       );
 
-      // 🟢 WhatsApp message for Division
-      // const messageText = sortedSectors
-      //   .map(
-      //     ({ sector, totalMembers, participatedUnits, totalUnits }) =>
-      //       `*⏺* ${sector} ---: *${totalMembers}/${participatedUnits}*/${totalUnits}`
-      //   )
-      //   .join("\n");
       const messageText = sortedSectors
         .map(({ sector, totalMembers, participatedUnits, totalUnits }) => {
           const emoji =
@@ -601,7 +594,7 @@ _${date}_
     <a href="${whatsappLink}" target="_blank"
       style="
         display:inline-block;
-        padding:10px 20px;
+        padding:10px 10px;
         background-color:#25D366;
         color:white;
         border-radius:8px;
@@ -615,11 +608,11 @@ _${date}_
     Swal.fire({
       title: `📊 Unit Status ${sector ? `(${sector} Sector)` : ""}`,
       html: messageHTML,
-      icon: "info",
       width: "600px",
       confirmButtonText: "Close",
       confirmButtonColor: "#0b6b5a",
       background: "#f8fdfd",
+      icon: "info",
     });
   };
 
@@ -1137,7 +1130,7 @@ _${date}_
           style={{
             background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
             color: "#333",
-            padding: "20px",
+            padding: "10px",
             fontSize: "16px",
           }}>
           <div className="p-2">
@@ -1237,6 +1230,12 @@ _${date}_
         </Modal.Footer>
       </Modal>
       <style jsx>{`
+        .small-icon {
+          transform: scale(0.2); /* Shrinks icon to 70% */
+          margin-top: -5px;      /* Adjusts spacing if needed */
+          margin-bottom: -5px;
+        }
+
         .filter-card {
           background: #f9fafc;
           padding: 10px;
@@ -1276,7 +1275,7 @@ _${date}_
           font-weight: 600;
           margin-bottom: 4px;
         }
-
+      
        .filter-card  select
         input {
           padding: 8px 10px;

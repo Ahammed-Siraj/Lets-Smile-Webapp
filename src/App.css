@@ -78,6 +78,25 @@ button.secondary {
   color: #0b6b5a;
 }
 
+/* 🔹 Global Compact SweetAlert2 Styling */
+.swal2-icon {
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  transform: scale(0.5) !important; /* smaller icon */
+}
+
+.swal2-title {
+  margin-top: 0px !important; /* tighter space below icon */
+  font-size: 18px !important; /* optional: smaller title */
+  font-weight: 600; /* keeps it readable */
+}
+
+/* Optional: shrink popup a little for cleaner view */
+.swal2-popup {
+  border-radius: 10px !important;
+}
+
 @media (max-width: 720px) {
   .container {
     margin: 10px;
