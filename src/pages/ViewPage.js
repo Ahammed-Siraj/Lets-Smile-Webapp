@@ -87,7 +87,14 @@ export default function ViewPage() {
       await axios.put(`${API_BASE_URL}/form/${editingId}`, payload, {
         headers,
       });
-      Swal.fire("Updated!", "Record updated successfully.", "success");
+      Swal.fire({
+        title: "Updated!",
+        text: "Record Updated successfully.",
+        icon: "success",
+        timer: 1000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
       setIsEditing(false);
       fetchRecords();
     } catch (error) {

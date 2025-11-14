@@ -50,10 +50,24 @@ export default function EntryPage() {
         await axios.put(`${API_BASE_URL}/form/${editingId}`, payload, {
           headers,
         });
-        Swal.fire("Updated!", "Record updated successfully.", "success");
+        Swal.fire({
+          title: "Updated!",
+          text: "Record updated successfully.",
+          icon: "success",
+          timer: 1000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       } else {
         await axios.post(`${API_BASE_URL}/form`, payload, { headers });
-        Swal.fire("Saved!", "Record added successfully.", "success");
+        Swal.fire({
+          title: "Saved!",
+          text: "Record added successfully.",
+          icon: "success",
+          timer: 1000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       }
       setFormData({
         name: "",
