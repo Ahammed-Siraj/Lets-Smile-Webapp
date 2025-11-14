@@ -113,7 +113,7 @@ export default function Navbar() {
             alignItems: "down",
             flexWrap: "wrap",
             backgroundColor: "#0b6b5a",
-            gap: "10px",
+            // gap: "10px",
             zIndex: 999,
           }}>
           {!token && (

@@ -104,12 +104,11 @@ export default function EntryPage() {
           display: "flex",
           flexDirection: "column",
           background: "linear-gradient(135deg, #ACB6E5 0%, #74ebd5 100%)",
-          padding: "20px 20px",
+          padding: "10px 10px",
           borderRadius: "10px",
           boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
           color: "#333",
           maxWidth: "1000px",
-          margin: "10px",
         }}>
         <div className="form-group">
           <label>
