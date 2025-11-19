@@ -821,6 +821,7 @@ _${date}_
           fontWeight: "500",
           marginBottom: "10px",
           color: "#0b6b5a",
+          textAlign: "center",
         }}>
         📋 SMILE Friends List
       </h2>

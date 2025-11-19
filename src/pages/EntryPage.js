@@ -326,8 +326,8 @@ export default function EntryPage() {
       }}>
       <h2
         style={{
-          fontSize: "1.6rem",
-          fontWeight: "600",
+          fontSize: "1.5rem",
+          fontWeight: "500",
           marginBottom: "10px",
           color: "#0b6b5a",
           textAlign: "center",
