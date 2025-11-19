@@ -298,7 +298,7 @@ export default function EntryPage() {
   function inputStyle() {
     return {
       width: "100%",
-      padding: "6px 8px",
+      padding: "6px,8px",
       borderRadius: "10px",
       border: "1px solid #ccc",
       fontSize: "1rem",
@@ -319,7 +319,7 @@ export default function EntryPage() {
         borderRadius: "10px",
         boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
         color: "#333",
-        maxWidth: "1000px",
+        maxWidth: "500px",
         width: "auto",
       }}>
       <h2
