@@ -298,7 +298,7 @@ export default function EntryPage() {
   function inputStyle() {
     return {
       width: "100%",
-      padding: "12px 14px",
+      padding: "6px 8px",
       borderRadius: "10px",
       border: "1px solid #ccc",
       fontSize: "1rem",
