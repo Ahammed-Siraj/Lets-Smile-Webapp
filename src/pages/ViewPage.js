@@ -128,7 +128,6 @@ export default function ViewPage() {
     let sortedData;
     const userType = localStorage.getItem("userType");
     const division = localStorage.getItem("division");
-    //const sector = localStorage.getItem("sector");
     const unit = localStorage.getItem("unit");
 
     if (userType === "division") {
