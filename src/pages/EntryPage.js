@@ -299,7 +299,7 @@ export default function EntryPage() {
     return {
       width: "100%",
       padding: "12px 14px",
-      borderRadius: "12px",
+      borderRadius: "10px",
       border: "1px solid #ccc",
       fontSize: "1rem",
       outline: "none",
@@ -316,13 +316,13 @@ export default function EntryPage() {
         flexDirection: "column",
         justifyContent: "center",
         background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
-        borderRadius: "20px",
+        borderRadius: "10px",
         boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
         color: "#333",
         maxWidth: "480px",
         width: "100%",
-        margin: "0 auto",
-        padding: "15px",
+        margin: "10px",
+        padding: "10px",
       }}>
       <h2
         style={{
@@ -341,8 +341,8 @@ export default function EntryPage() {
           display: "flex",
           flexDirection: "column",
           background: "linear-gradient(135deg, #ACB6E5 0%, #74ebd5 100%)",
-          padding: "15px",
-          borderRadius: "20px",
+          padding: "10px",
+          borderRadius: "10px",
           boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
           color: "#333",
         }}>
