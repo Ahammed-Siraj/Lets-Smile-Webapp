@@ -810,7 +810,7 @@ _${date}_
         justifyContent: "center",
         background: "linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%)",
         borderRadius: "10px",
-        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
         color: "#333",
         maxWidth: "1000px",
         width: "auto",

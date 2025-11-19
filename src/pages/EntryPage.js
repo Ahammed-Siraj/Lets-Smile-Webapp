@@ -319,10 +319,8 @@ export default function EntryPage() {
         borderRadius: "10px",
         boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
         color: "#333",
-        maxWidth: "480px",
-        width: "100%",
-        margin: "10px",
-        padding: "10px",
+        maxWidth: "1000px",
+        width: "auto",
       }}>
       <h2
         style={{
