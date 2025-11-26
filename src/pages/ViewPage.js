@@ -551,7 +551,7 @@ https://smile-manjeshwar.vercel.app
 ────────────────
 ${messageText}
 
-*Total:* ${totalMembers}/${participatedUnits}/${totalUnits}
+*Total:* ${totalMembers} / ${participatedUnits} / ${totalUnits}
 ────────────────
 *Generated On:*
 _${date}_
