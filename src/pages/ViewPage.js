@@ -439,7 +439,7 @@ https://smile-manjeshwar.vercel.app
 ────────────────
 ${messageText}
 
-Total: *${grandTotalMembers}/${grandParticipatedUnits}*/${grandTotalUnits}
+Total: *${grandTotalMembers} / ${grandParticipatedUnits}* / ${grandTotalUnits}
 ────────────────
 *Generated On:*
 _${date}_
